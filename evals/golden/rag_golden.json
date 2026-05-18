@@ -1,0 +1,57 @@
+[
+  {
+    "id": "rag-001",
+    "question": "TODO: replace with a real maintainer question from the repo",
+    "ideal_answer": "TODO: the answer a maintainer would give",
+    "ground_truth_chunk_ids": ["TODO: id of the corpus chunk that contains the answer"],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-002",
+    "question": "TODO",
+    "ideal_answer": "TODO",
+    "ground_truth_chunk_ids": ["TODO"],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-003",
+    "question": "TODO",
+    "ideal_answer": "TODO",
+    "ground_truth_chunk_ids": ["TODO"],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-004",
+    "question": "TODO",
+    "ideal_answer": "TODO",
+    "ground_truth_chunk_ids": ["TODO"],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-005",
+    "question": "TODO",
+    "ideal_answer": "TODO",
+    "ground_truth_chunk_ids": ["TODO"],
+    "hand_labeled": true
+  },
+  {"id": "rag-006",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-007",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-008",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-009",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-010",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-011",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-012",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-013",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-014",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-015",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-016",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-017",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-018",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-019",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-020",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-021",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-022",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-023",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-024",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
+  {"id": "rag-025",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false}
+]

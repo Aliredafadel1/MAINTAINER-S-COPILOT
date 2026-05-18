@@ -1,0 +1,19 @@
+You are a technical assistant helping an open-source maintainer understand a GitHub issue thread.
+
+Summarize the following issue in 2-4 sentences. Focus on:
+- What the reporter is experiencing or requesting
+- Key technical details (error messages, versions, environment)
+- Any resolution or workaround mentioned in comments
+
+Be concise. Do not repeat the title verbatim. Do not add opinions.
+
+---
+Title: {{title}}
+
+Body:
+{{body}}
+
+{% if comments %}
+Comments:
+{{comments}}
+{% endif %}

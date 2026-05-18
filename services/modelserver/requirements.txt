@@ -1,0 +1,14 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+transformers==4.44.2
+torch==2.4.1+cpu
+safetensors==0.4.5
+sentence-transformers==3.1.1
+hvac==2.3.0
+minio==7.2.8
+anthropic==0.34.2
+opentelemetry-sdk==1.27.0
+opentelemetry-exporter-otlp-proto-grpc==1.27.0
+opentelemetry-instrumentation-fastapi==0.48b0
+structlog==24.4.0
+pydantic==2.9.2

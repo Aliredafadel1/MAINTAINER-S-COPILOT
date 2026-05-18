@@ -1,0 +1,529 @@
+id,title,body,label,created_at,text
+255,Add support for HDF5 export format,"It would be great to export results in `Parquet` format in addition to the existing options.
+
+Use case: I'm integrating with Grafana which only accepts Parquet.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2024-08-12T02:22:09Z,"Add support for HDF5 export format It would be great to export results in `Parquet` format in addition to the existing options.
+
+Use case: I'm integrating with Grafana which only accepts Parquet.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding."
+256,Configurable timeout per request,"Currently `max_retries` is set globally at initialization time. It would be helpful to override it per-request.
+
+Proposed API:
+```python
+client.call(data, max_retries=0.7)
+```",feature,2024-08-15T19:27:01Z,"Configurable timeout per request Currently `max_retries` is set globally at initialization time. It would be helpful to override it per-request.
+
+Proposed API:
+```python
+client.call(data, max_retries=0.7)
+```"
+257,Add CLI command for export,"There's no CLI command to migrate. Users currently have to write a Python script.
+
+Proposed:
+```bash
+lib migrate --input file.json --output out/
+```
+
+This would significantly improve the DX for non-Python users.",feature,2024-08-18T08:34:10Z,"Add CLI command for export There's no CLI command to migrate. Users currently have to write a Python script.
+
+Proposed:
+```bash
+lib migrate --input file.json --output out/
+```
+
+This would significantly improve the DX for non-Python users."
+258,Race condition in load under concurrent load,"Under concurrent requests (3 workers), `fit` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=fit) for _ in range(3)]
+```
+Version: 0.110.0",bug,2024-08-19T13:10:35Z,"Race condition in load under concurrent load Under concurrent requests (3 workers), `fit` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=fit) for _ in range(3)]
+```
+Version: 0.110.0"
+259,Configurable chunk_size per request,,feature,2024-08-21T04:56:19Z,Configurable chunk_size per request 
+260,ValueError when process receives empty input,"`transform([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 3.0.1, Python 3.11",bug,2024-08-22T07:39:26Z,"ValueError when process receives empty input `transform([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 3.0.1, Python 3.11"
+261,Add example for streaming large files to cookbook,"The cookbook covers basic usage but doesn't have an example for multi-GPU training.
+
+This is a common pattern and I had to figure it out by reading the source. A short example would save others the same time.",docs,2024-08-27T14:01:32Z,"Add example for streaming large files to cookbook The cookbook covers basic usage but doesn't have an example for multi-GPU training.
+
+This is a common pattern and I had to figure it out by reading the source. A short example would save others the same time."
+262,Memory leak in Processor when processing large files,"I notice memory usage grows unboundedly when using `Client` to process files > 500MB.
+
+Profile output:
+```
+Client.process(): 2.3GB allocated, not released
+```
+Using transformers 4.35.0, Windows 11.",bug,2024-08-28T07:40:40Z,"Memory leak in Processor when processing large files I notice memory usage grows unboundedly when using `Client` to process files > 500MB.
+
+Profile output:
+```
+Client.process(): 2.3GB allocated, not released
+```
+Using transformers 4.35.0, Windows 11."
+263,Add CLI command for validate,,feature,2024-09-01T05:38:59Z,Add CLI command for validate 
+264,Add CLI command for validate,,feature,2024-09-03T08:20:23Z,Add CLI command for validate 
+306,Add support for CSV export format,"It would be great to export results in `Arrow` format in addition to the existing options.
+
+Use case: I'm integrating with Spark which only accepts Arrow.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2024-09-03T17:55:40Z,"Add support for CSV export format It would be great to export results in `Arrow` format in addition to the existing options.
+
+Use case: I'm integrating with Spark which only accepts Arrow.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding."
+265,Add MRR to metrics output,"The current metrics output includes accuracy and F1 but not NDCG.
+
+NDCG is important for our use case because imbalanced datasets.
+
+Would it be possible to add it as an optional output field?",feature,2024-09-03T18:17:36Z,"Add MRR to metrics output The current metrics output includes accuracy and F1 but not NDCG.
+
+NDCG is important for our use case because imbalanced datasets.
+
+Would it be possible to add it as an optional output field?"
+266,Race condition in run under concurrent load,"Under concurrent requests (10 workers), `run` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=run) for _ in range(10)]
+```
+Version: 1.9.0",bug,2024-09-04T11:06:00Z,"Race condition in run under concurrent load Under concurrent requests (10 workers), `run` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=run) for _ in range(10)]
+```
+Version: 1.9.0"
+267,Add support for HDF5 export format,"It would be great to export results in `CSV` format in addition to the existing options.
+
+Use case: I'm integrating with Grafana which only accepts CSV.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2024-09-04T20:44:42Z,"Add support for HDF5 export format It would be great to export results in `CSV` format in addition to the existing options.
+
+Use case: I'm integrating with Grafana which only accepts CSV.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding."
+268,How to use Session with Django?,"I'm trying to integrate `Loader` with `Flask` but I'm not sure how to configure it correctly.
+
+My current code:
+```python
+from lib import Loader
+from Flask import App
+
+app = App()
+# How do I attach Loader here?
+```
+
+Any examples or pointers would be helpful!",question,2024-09-10T02:28:55Z,"How to use Session with Django? I'm trying to integrate `Loader` with `Flask` but I'm not sure how to configure it correctly.
+
+My current code:
+```python
+from lib import Loader
+from Flask import App
+
+app = App()
+# How do I attach Loader here?
+```
+
+Any examples or pointers would be helpful!"
+269,Is async support planned for a future release?,"I need async support for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",question,2024-09-11T22:59:03Z,"Is async support planned for a future release? I need async support for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR."
+270,Plugin system for custom tokenizer,"Would love to see a plugin system so third-party packages can register custom `encoder` implementations.
+
+Something like:
+```python
+@lib.register_plugin('encoder')
+class MySession(BaseRetriever):
+    ...
+```",feature,2024-09-12T13:13:50Z,"Plugin system for custom tokenizer Would love to see a plugin system so third-party packages can register custom `encoder` implementations.
+
+Something like:
+```python
+@lib.register_plugin('encoder')
+class MySession(BaseRetriever):
+    ...
+```"
+271,Add token_count to metrics output,"The current metrics output includes accuracy and F1 but not precision@k.
+
+precision@k is important for our use case because our SLA requirements.
+
+Would it be possible to add it as an optional output field?",feature,2024-09-20T00:08:32Z,"Add token_count to metrics output The current metrics output includes accuracy and F1 but not precision@k.
+
+precision@k is important for our use case because our SLA requirements.
+
+Would it be possible to add it as an optional output field?"
+272,TypeError when calling predict with str argument,"I'm using version 1.9.0. When I call `predict(None)` I get:
+```
+TypeError: expected str, got tuple
+```
+This worked in v2.0.0. Steps to reproduce:
+1. Install `pip install lib==1.9.0`
+2. Run the attached script
+
+OS: Windows 11, Python: 3.12",bug,2024-09-20T02:05:25Z,"TypeError when calling predict with str argument I'm using version 1.9.0. When I call `predict(None)` I get:
+```
+TypeError: expected str, got tuple
+```
+This worked in v2.0.0. Steps to reproduce:
+1. Install `pip install lib==1.9.0`
+2. Run the attached script
+
+OS: Windows 11, Python: 3.12"
+273,How does Session handle input is None?,"I couldn't find documentation on how `Cache` behaves when the list is empty.
+
+For example:
+```python
+result = Cache().process(None)  # what happens?
+```
+
+Does it raise, return None, or something else?",question,2024-09-21T10:25:11Z,"How does Session handle input is None? I couldn't find documentation on how `Cache` behaves when the list is empty.
+
+For example:
+```python
+result = Cache().process(None)  # what happens?
+```
+
+Does it raise, return None, or something else?"
+274,Support async context manager in Cache,"Currently `Processor` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Processor() as ctx:` for use in asyncio applications.
+
+Related: #50",feature,2024-10-01T15:06:43Z,"Support async context manager in Cache Currently `Processor` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Processor() as ctx:` for use in asyncio applications.
+
+Related: #50"
+275,Performance of fit with large datasets,"I'm using `process` on datasets with ~50M rows and it's quite slow (~30s per batch).
+
+Is this expected? Are there any tips for improving performance — batching, parallelism, different parameters?",question,2024-10-02T16:54:57Z,"Performance of fit with large datasets I'm using `process` on datasets with ~50M rows and it's quite slow (~30s per batch).
+
+Is this expected? Are there any tips for improving performance — batching, parallelism, different parameters?"
+276,TypeError when calling transform with list argument,"I'm using version 0.8.1. When I call `predict(None)` I get:
+```
+TypeError: expected int, got NoneType
+```
+This worked in v0.109.0. Steps to reproduce:
+1. Install `pip install lib==0.8.1`
+2. Run the attached script
+
+OS: Ubuntu 22.04, Python: 3.11",bug,2024-10-03T17:29:37Z,"TypeError when calling transform with list argument I'm using version 0.8.1. When I call `predict(None)` I get:
+```
+TypeError: expected int, got NoneType
+```
+This worked in v0.109.0. Steps to reproduce:
+1. Install `pip install lib==0.8.1`
+2. Run the attached script
+
+OS: Ubuntu 22.04, Python: 3.11"
+277,Memory leak in Pipeline when processing large files,"I notice memory usage grows unboundedly when using `Loader` to process files > 500MB.
+
+Profile output:
+```
+Loader.process(): 2.3GB allocated, not released
+```
+Using torch 1.9.0, Windows 11.",bug,2024-10-03T21:33:13Z,"Memory leak in Pipeline when processing large files I notice memory usage grows unboundedly when using `Loader` to process files > 500MB.
+
+Profile output:
+```
+Loader.process(): 2.3GB allocated, not released
+```
+Using torch 1.9.0, Windows 11."
+278,Add token_count to metrics output,"The current metrics output includes accuracy and F1 but not NDCG.
+
+NDCG is important for our use case because regulatory compliance.
+
+Would it be possible to add it as an optional output field?",feature,2024-10-05T05:51:29Z,"Add token_count to metrics output The current metrics output includes accuracy and F1 but not NDCG.
+
+NDCG is important for our use case because regulatory compliance.
+
+Would it be possible to add it as an optional output field?"
+279,Broken link in migration guide page,"The link to `examples notebook` on the API reference page returns 404.
+
+Link: https://docs.example.com/guides/contributing
+
+It seems like the page was moved or renamed.",docs,2024-10-09T07:31:34Z,"Broken link in migration guide page The link to `examples notebook` on the API reference page returns 404.
+
+Link: https://docs.example.com/guides/contributing
+
+It seems like the page was moved or renamed."
+280,Add support for JSON Lines export format,"It would be great to export results in `HDF5` format in addition to the existing options.
+
+Use case: I'm integrating with Grafana which only accepts HDF5.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2024-10-10T17:04:23Z,"Add support for JSON Lines export format It would be great to export results in `HDF5` format in addition to the existing options.
+
+Use case: I'm integrating with Grafana which only accepts HDF5.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding."
+281,Broken link in migration guide page,"The link to `changelog` on the migration guide page returns 404.
+
+Link: https://docs.example.com/docs/changelog
+
+It seems like the page was moved or renamed.",docs,2024-10-14T06:36:06Z,"Broken link in migration guide page The link to `changelog` on the migration guide page returns 404.
+
+Link: https://docs.example.com/docs/changelog
+
+It seems like the page was moved or renamed."
+282,Performance of transform with large datasets,"I'm using `fit` on datasets with ~1000M rows and it's quite slow (~60s per batch).
+
+Is this expected? Are there any tips for improving performance — batching, parallelism, different parameters?",question,2024-10-17T06:32:55Z,"Performance of transform with large datasets I'm using `fit` on datasets with ~1000M rows and it's quite slow (~60s per batch).
+
+Is this expected? Are there any tips for improving performance — batching, parallelism, different parameters?"
+283,Memory leak in Loader when processing large files,"I notice memory usage grows unboundedly when using `Session` to process files > 1000MB.
+
+Profile output:
+```
+Session.process(): 2.3GB allocated, not released
+```
+Using pandas 4.35.0, macOS 14.",bug,2024-10-18T17:33:10Z,"Memory leak in Loader when processing large files I notice memory usage grows unboundedly when using `Session` to process files > 1000MB.
+
+Profile output:
+```
+Session.process(): 2.3GB allocated, not released
+```
+Using pandas 4.35.0, macOS 14."
+284,ConnectionError after 1000 retries with async client,"Using httpx 3.0.1 on Python 3.10.
+When the server is slow, I get `ConnectionError` after exactly 3 retries even though I set `TIMEOUT=120`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 142
+```",bug,2024-10-21T15:05:49Z,"ConnectionError after 1000 retries with async client Using httpx 3.0.1 on Python 3.10.
+When the server is slow, I get `ConnectionError` after exactly 3 retries even though I set `TIMEOUT=120`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 142
+```"
+285,Performance of run with large datasets,"I'm using `run` on datasets with ~100M rows and it's quite slow (~30s per batch).
+
+Is this expected? Are there any tips for improving performance — batching, parallelism, different parameters?",question,2024-10-26T14:06:53Z,"Performance of run with large datasets I'm using `run` on datasets with ~100M rows and it's quite slow (~30s per batch).
+
+Is this expected? Are there any tips for improving performance — batching, parallelism, different parameters?"
+286,Plugin system for custom encoder,"Would love to see a plugin system so third-party packages can register custom `encoder` implementations.
+
+Something like:
+```python
+@lib.register_plugin('encoder')
+class MyLoader(BaseRetriever):
+    ...
+```",feature,2024-10-28T01:08:46Z,"Plugin system for custom encoder Would love to see a plugin system so third-party packages can register custom `encoder` implementations.
+
+Something like:
+```python
+@lib.register_plugin('encoder')
+class MyLoader(BaseRetriever):
+    ...
+```"
+287,Add support for Arrow export format,"It would be great to export results in `Arrow` format in addition to the existing options.
+
+Use case: I'm integrating with Airflow which only accepts Arrow.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2024-10-29T07:15:02Z,"Add support for Arrow export format It would be great to export results in `Arrow` format in addition to the existing options.
+
+Use case: I'm integrating with Airflow which only accepts Arrow.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding."
+288,ValueError when parse receives empty input,"`load([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 0.110.0, Python 3.12",bug,2024-10-31T19:56:19Z,"ValueError when parse receives empty input `load([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 0.110.0, Python 3.12"
+289,Memory leak in Session when processing large files,"I notice memory usage grows unboundedly when using `Pipeline` to process files > 100MB.
+
+Profile output:
+```
+Pipeline.process(): 2.3GB allocated, not released
+```
+Using transformers 0.110.0, macOS 14.",bug,2024-11-01T22:30:36Z,"Memory leak in Session when processing large files I notice memory usage grows unboundedly when using `Pipeline` to process files > 100MB.
+
+Profile output:
+```
+Pipeline.process(): 2.3GB allocated, not released
+```
+Using transformers 0.110.0, macOS 14."
+290,ConnectionError after 3 retries with async client,"Using torch 4.35.0 on Python 3.11.
+When the server is slow, I get `ConnectionError` after exactly 3 retries even though I set `TIMEOUT=60`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 87
+```",bug,2024-11-05T00:25:17Z,"ConnectionError after 3 retries with async client Using torch 4.35.0 on Python 3.11.
+When the server is slow, I get `ConnectionError` after exactly 3 retries even though I set `TIMEOUT=60`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 87
+```"
+291,Documentation for process is missing return type,"The docstring for `run` doesn't mention what it returns. Looking at the source it returns `list` but this should be documented.
+
+Currently:
+```
+def run(x):
+    """"""Process x.""""""
+```
+
+Expected:
+```
+def run(x) -> list:
+    """"""Process x.
+    Returns: list — ...
+    """"""
+```",docs,2024-11-08T10:33:04Z,"Documentation for process is missing return type The docstring for `run` doesn't mention what it returns. Looking at the source it returns `list` but this should be documented.
+
+Currently:
+```
+def run(x):
+    """"""Process x.""""""
+```
+
+Expected:
+```
+def run(x) -> list:
+    """"""Process x.
+    Returns: list — ...
+    """"""
+```"
+292,encode raises AttributeError on Ubuntu 22.04,"Reproduction:
+```python
+from lib import Pipeline
+obj = Pipeline()
+obj.process()  # AttributeError: 'Pipeline' has no attribute 'reset'
+```
+Works fine on macOS, fails on Windows 11. Version 2.0.3.",bug,2024-11-17T00:23:06Z,"encode raises AttributeError on Ubuntu 22.04 Reproduction:
+```python
+from lib import Pipeline
+obj = Pipeline()
+obj.process()  # AttributeError: 'Pipeline' has no attribute 'reset'
+```
+Works fine on macOS, fails on Windows 11. Version 2.0.3."
+293,How does Client handle input is None?,"I couldn't find documentation on how `Pipeline` behaves when the list is empty.
+
+For example:
+```python
+result = Pipeline().process(None)  # what happens?
+```
+
+Does it raise, return None, or something else?",question,2024-11-30T13:19:04Z,"How does Client handle input is None? I couldn't find documentation on how `Pipeline` behaves when the list is empty.
+
+For example:
+```python
+result = Pipeline().process(None)  # what happens?
+```
+
+Does it raise, return None, or something else?"
+294,predict raises AttributeError on Ubuntu 22.04,"Reproduction:
+```python
+from lib import Processor
+obj = Processor()
+obj.parse()  # AttributeError: 'Processor' has no attribute 'reset'
+```
+Works fine on macOS, fails on Ubuntu 22.04. Version 0.110.0.",bug,2024-12-02T08:26:13Z,"predict raises AttributeError on Ubuntu 22.04 Reproduction:
+```python
+from lib import Processor
+obj = Processor()
+obj.parse()  # AttributeError: 'Processor' has no attribute 'reset'
+```
+Works fine on macOS, fails on Ubuntu 22.04. Version 0.110.0."
+295,ValueError when load receives empty input,,bug,2024-12-08T21:05:24Z,ValueError when load receives empty input 
+296,Add MRR to metrics output,"The current metrics output includes accuracy and F1 but not MRR.
+
+MRR is important for our use case because our SLA requirements.
+
+Would it be possible to add it as an optional output field?",feature,2024-12-09T21:22:24Z,"Add MRR to metrics output The current metrics output includes accuracy and F1 but not MRR.
+
+MRR is important for our use case because our SLA requirements.
+
+Would it be possible to add it as an optional output field?"
+297,Support async context manager in Client,"Currently `Loader` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Loader() as ctx:` for use in asyncio applications.
+
+Related: #10",feature,2024-12-12T23:42:32Z,"Support async context manager in Client Currently `Loader` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Loader() as ctx:` for use in asyncio applications.
+
+Related: #10"
+298,Configurable temperature per request,"Currently `timeout` is set globally at initialization time. It would be helpful to override it per-request.
+
+Proposed API:
+```python
+client.call(data, timeout=512)
+```",feature,2024-12-13T07:39:53Z,"Configurable temperature per request Currently `timeout` is set globally at initialization time. It would be helpful to override it per-request.
+
+Proposed API:
+```python
+client.call(data, timeout=512)
+```"
+299,ConnectionError after 1000 retries with async client,"Using sqlalchemy 0.8.1 on Python 3.11.
+When the server is slow, I get `ConnectionError` after exactly 50 retries even though I set `TIMEOUT=120`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 321
+```",bug,2024-12-13T09:50:19Z,"ConnectionError after 1000 retries with async client Using sqlalchemy 0.8.1 on Python 3.11.
+When the server is slow, I get `ConnectionError` after exactly 50 retries even though I set `TIMEOUT=120`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 321
+```"
+300,ConnectionError after 50 retries with async client,"Using sqlalchemy 0.8.1 on Python 3.12.
+When the server is slow, I get `ConnectionError` after exactly 10 retries even though I set `TIMEOUT=120`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 321
+```",bug,2024-12-13T17:43:05Z,"ConnectionError after 50 retries with async client Using sqlalchemy 0.8.1 on Python 3.12.
+When the server is slow, I get `ConnectionError` after exactly 10 retries even though I set `TIMEOUT=120`.
+
+Traceback:
+```
+ConnectionError: max retries exceeded
+  File 'client.py', line 321
+```"
+308,Broken link in configuration page,"The link to `changelog` on the migration guide page returns 404.
+
+Link: https://docs.example.com/guides/contributing
+
+It seems like the page was moved or renamed.",docs,2024-12-26T01:00:53Z,"Broken link in configuration page The link to `changelog` on the migration guide page returns 404.
+
+Link: https://docs.example.com/guides/contributing
+
+It seems like the page was moved or renamed."

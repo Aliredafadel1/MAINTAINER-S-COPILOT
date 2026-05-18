@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Demo Host App</title>
+  <style>body { font-family: sans-serif; padding: 2rem; }</style>
+</head>
+<body>
+  <h1>Demo Host App</h1>
+  <p>This demo page embeds the Maintainer's Copilot widget. Replace <code>YOUR_WIDGET_ID</code> with the ID from the admin UI.</p>
+  <hr />
+  <h2>Sample issue to triage</h2>
+  <pre style="background:#f6f8fa;padding:1rem;border-radius:4px">
+Title: ConnectionError when using async client with retry=3
+Body: Using transformers 4.35.0 on Python 3.11.
+When I call pipeline("text-classification", model="distilbert-base") and the
+hub is slow, I get ConnectionError after exactly 3 retries even though I set
+TRANSFORMERS_OFFLINE=0.
+  </pre>
+  <script
+    src="http://localhost:8080/widget.iife.js"
+    data-widget-id="YOUR_WIDGET_ID"
+    data-api-url="http://localhost:8000"
+  ></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# Committed thresholds — api refuses to boot if any value is 0 or missing.
+# Numbers reflect post-training runs on the golden set; update after each retrain.
+classifier:
+  macro_f1: 0.75
+  min_per_class_f1: 0.60
+  accuracy: 0.78
+
+rag:
+  hit_at_5: 0.80
+  mrr_at_10: 0.70
+  faithfulness: 0.75
+  answer_relevancy: 0.70

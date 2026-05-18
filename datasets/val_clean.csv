@@ -1,0 +1,478 @@
+id,title,body,label,created_at,text,title_clean,body_clean,text_clean
+183,Add CLI command for lint,"There's no CLI command to migrate. Users currently have to write a Python script.
+
+Proposed:
+```bash
+lib migrate --input file.json --output out/
+```
+
+This would significantly improve the DX for non-Python users.",feature,2023-12-21T19:46:00Z,"Add CLI command for lint There's no CLI command to migrate. Users currently have to write a Python script.
+
+Proposed:
+```bash
+lib migrate --input file.json --output out/
+```
+
+This would significantly improve the DX for non-Python users.",Add CLI command for lint,There's no CLI command to migrate. Users currently have to write a Python script. Proposed: [CODE] This would significantly improve the DX for non-Python users.,Add CLI command for lint Add CLI command for lint There's no CLI command to migrate. Users currently have to write a Python script. Proposed: [CODE] This would significantly improve the DX for non-Python users.
+139,Add CLI command for migrate,"There's no CLI command to migrate. Users currently have to write a Python script.
+
+Proposed:
+```bash
+lib migrate --input file.json --output out/
+```
+
+This would significantly improve the DX for non-Python users.",feature,2023-06-07T02:00:08Z,"Add CLI command for migrate There's no CLI command to migrate. Users currently have to write a Python script.
+
+Proposed:
+```bash
+lib migrate --input file.json --output out/
+```
+
+This would significantly improve the DX for non-Python users.",Add CLI command for migrate,There's no CLI command to migrate. Users currently have to write a Python script. Proposed: [CODE] This would significantly improve the DX for non-Python users.,Add CLI command for migrate Add CLI command for migrate There's no CLI command to migrate. Users currently have to write a Python script. Proposed: [CODE] This would significantly improve the DX for non-Python users.
+87,fit raises AttributeError on Windows 11,,bug,2022-12-14T10:35:25Z,fit raises AttributeError on Windows 11 ,fit raises AttributeError on Windows 11,,fit raises AttributeError on Windows 11 fit raises AttributeError on Windows 11
+89,Is async support planned for a future release?,,question,2022-12-24T04:05:12Z,Is async support planned for a future release? ,Is async support planned for a future release?,,Is async support planned for a future release? Is async support planned for a future release?
+241,TypeError when calling fit with list argument,"I'm using version 0.8.1. When I call `validate(None)` I get:
+```
+TypeError: expected int, got NoneType
+```
+This worked in v1.8.0. Steps to reproduce:
+1. Install `pip install lib==0.8.1`
+2. Run the attached script
+
+OS: Ubuntu 22.04, Python: 3.11",bug,2024-06-17T11:41:45Z,"TypeError when calling fit with list argument I'm using version 0.8.1. When I call `validate(None)` I get:
+```
+TypeError: expected int, got NoneType
+```
+This worked in v1.8.0. Steps to reproduce:
+1. Install `pip install lib==0.8.1`
+2. Run the attached script
+
+OS: Ubuntu 22.04, Python: 3.11",TypeError when calling fit with list argument,"I'm using version 0.8.1. When I call [CODE] I get: [CODE] This worked in v1.8.0. Steps to reproduce: 1. Install [CODE] 2. Run the attached script OS: Ubuntu 22.04, Python: 3.11","TypeError when calling fit with list argument TypeError when calling fit with list argument I'm using version 0.8.1. When I call [CODE] I get: [CODE] This worked in v1.8.0. Steps to reproduce: 1. Install [CODE] 2. Run the attached script OS: Ubuntu 22.04, Python: 3.11"
+167,Plugin system for custom cache,"Would love to see a plugin system so third-party packages can register custom `encoder` implementations.
+
+Something like:
+```python
+@lib.register_plugin('encoder')
+class MyEncoder(BaseRetriever):
+    ...
+```",feature,2023-09-11T22:09:48Z,"Plugin system for custom cache Would love to see a plugin system so third-party packages can register custom `encoder` implementations.
+
+Something like:
+```python
+@lib.register_plugin('encoder')
+class MyEncoder(BaseRetriever):
+    ...
+```",Plugin system for custom cache,Would love to see a plugin system so third-party packages can register custom [CODE] implementations. Something like: [CODE],Plugin system for custom cache Plugin system for custom cache Would love to see a plugin system so third-party packages can register custom [CODE] implementations. Something like: [CODE]
+244,ValueError when predict receives empty input,"`encode([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 2.1.0, Python 3.12",bug,2024-07-01T22:17:50Z,"ValueError when predict receives empty input `encode([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 2.1.0, Python 3.12",ValueError when predict receives empty input,"[CODE] raises [CODE] instead of returning an empty result. Expected: return [CODE] Actual: raises exception Version 2.1.0, Python 3.12","ValueError when predict receives empty input ValueError when predict receives empty input [CODE] raises [CODE] instead of returning an empty result. Expected: return [CODE] Actual: raises exception Version 2.1.0, Python 3.12"
+301,Broken link in configuration page,"The link to `contributing guide` on the configuration page returns 404.
+
+Link: https://docs.example.com/examples/notebook
+
+It seems like the page was moved or renamed.",docs,2022-09-02T13:03:28Z,"Broken link in configuration page The link to `contributing guide` on the configuration page returns 404.
+
+Link: https://docs.example.com/examples/notebook
+
+It seems like the page was moved or renamed.",Broken link in configuration page,The link to [CODE] on the configuration page returns 404. Link: [URL] It seems like the page was moved or renamed.,Broken link in configuration page Broken link in configuration page The link to [CODE] on the configuration page returns 404. Link: [URL] It seems like the page was moved or renamed.
+312,What is the recommended way to handle cache model weights?,"I have a use case where I need to retry on timeout. I see a few possible approaches:
+
+1. Use `cached_model` — but I'm not sure if it's thread-safe
+2. Use `new Client() per request` — seems more heavyweight
+
+What is the recommended approach? Is there documentation I missed?",question,2024-05-09T07:29:40Z,"What is the recommended way to handle cache model weights? I have a use case where I need to retry on timeout. I see a few possible approaches:
+
+1. Use `cached_model` — but I'm not sure if it's thread-safe
+2. Use `new Client() per request` — seems more heavyweight
+
+What is the recommended approach? Is there documentation I missed?",What is the recommended way to handle cache model weights?,I have a use case where I need to retry on timeout. I see a few possible approaches: 1. Use [CODE] — but I'm not sure if it's thread-safe 2. Use [CODE] — seems more heavyweight What is the recommended approach? Is there documentation I missed?,What is the recommended way to handle cache model weights? What is the recommended way to handle cache model weights? I have a use case where I need to retry on timeout. I see a few possible approaches: 1. Use [CODE] — but I'm not sure if it's thread-safe 2. Use [CODE] — seems more heavyweight What is the recommended approach? Is there documentation I missed?
+117,Getting started guide is outdated — still references v2.9.0 API,"The Getting Started guide at docs/quickstart.md still shows the v2.9.0 API:
+```python
+from lib import OldClient  # removed in v2.1.0
+```
+The new API is:
+```python
+from lib import Client
+```
+Could the docs be updated?",docs,2023-03-28T11:05:49Z,"Getting started guide is outdated — still references v2.9.0 API The Getting Started guide at docs/quickstart.md still shows the v2.9.0 API:
+```python
+from lib import OldClient  # removed in v2.1.0
+```
+The new API is:
+```python
+from lib import Client
+```
+Could the docs be updated?",Getting started guide is outdated — still references v2.9.0 API,The Getting Started guide at docs/quickstart.md still shows the v2.9.0 API: [CODE] The new API is: [CODE] Could the docs be updated?,Getting started guide is outdated — still references v2.9.0 API Getting started guide is outdated — still references v2.9.0 API The Getting Started guide at docs/quickstart.md still shows the v2.9.0 API: [CODE] The new API is: [CODE] Could the docs be updated?
+304,Is async support planned for a future release?,"I need async support for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",question,2022-03-05T12:35:49Z,"Is async support planned for a future release? I need async support for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",Is async support planned for a future release?,"I need async support for my project. I searched the issues and didn't find any existing discussion. Is this something the maintainers are considering? If not, I might try to submit a PR.","Is async support planned for a future release? Is async support planned for a future release? I need async support for my project. I searched the issues and didn't find any existing discussion. Is this something the maintainers are considering? If not, I might try to submit a PR."
+243,README installation instructions don't work on Ubuntu 22.04,,docs,2024-07-01T00:22:47Z,README installation instructions don't work on Ubuntu 22.04 ,README installation instructions don't work on Ubuntu 22.04,,README installation instructions don't work on Ubuntu 22.04 README installation instructions don't work on Ubuntu 22.04
+148,Memory leak in Processor when processing large files,"I notice memory usage grows unboundedly when using `Processor` to process files > 500MB.
+
+Profile output:
+```
+Processor.process(): 2.3GB allocated, not released
+```
+Using sqlalchemy 4.35.0, macOS 14.",bug,2023-07-11T01:43:58Z,"Memory leak in Processor when processing large files I notice memory usage grows unboundedly when using `Processor` to process files > 500MB.
+
+Profile output:
+```
+Processor.process(): 2.3GB allocated, not released
+```
+Using sqlalchemy 4.35.0, macOS 14.",Memory leak in Processor when processing large files,"I notice memory usage grows unboundedly when using [CODE] to process files > 500MB. Profile output: [CODE] Using sqlalchemy 4.35.0, macOS 14.","Memory leak in Processor when processing large files Memory leak in Processor when processing large files I notice memory usage grows unboundedly when using [CODE] to process files > 500MB. Profile output: [CODE] Using sqlalchemy 4.35.0, macOS 14."
+46,parse raises AttributeError on Ubuntu 22.04,"Reproduction:
+```python
+from lib import Model
+obj = Model()
+obj.parse()  # AttributeError: 'Model' has no attribute 'reset'
+```
+Works fine on macOS, fails on Windows 11. Version 0.8.1.",bug,2022-06-27T22:32:47Z,"parse raises AttributeError on Ubuntu 22.04 Reproduction:
+```python
+from lib import Model
+obj = Model()
+obj.parse()  # AttributeError: 'Model' has no attribute 'reset'
+```
+Works fine on macOS, fails on Windows 11. Version 0.8.1.",parse raises AttributeError on Ubuntu 22.04,"Reproduction: [CODE] Works fine on macOS, fails on Windows 11. Version 0.8.1.","parse raises AttributeError on Ubuntu 22.04 parse raises AttributeError on Ubuntu 22.04 Reproduction: [CODE] Works fine on macOS, fails on Windows 11. Version 0.8.1."
+48,Add precision@k to metrics output,"The current metrics output includes accuracy and F1 but not latency_p99.
+
+latency_p99 is important for our use case because imbalanced datasets.
+
+Would it be possible to add it as an optional output field?",feature,2022-07-13T20:56:10Z,"Add precision@k to metrics output The current metrics output includes accuracy and F1 but not latency_p99.
+
+latency_p99 is important for our use case because imbalanced datasets.
+
+Would it be possible to add it as an optional output field?",Add precision@k to metrics output,The current metrics output includes accuracy and F1 but not latency_p99. latency_p99 is important for our use case because imbalanced datasets. Would it be possible to add it as an optional output field?,Add precision@k to metrics output Add precision@k to metrics output The current metrics output includes accuracy and F1 but not latency_p99. latency_p99 is important for our use case because imbalanced datasets. Would it be possible to add it as an optional output field?
+182,Plugin system for custom classifier,"Would love to see a plugin system so third-party packages can register custom `cache` implementations.
+
+Something like:
+```python
+@lib.register_plugin('cache')
+class MyLoader(BaseTokenizer):
+    ...
+```",feature,2023-12-08T19:45:38Z,"Plugin system for custom classifier Would love to see a plugin system so third-party packages can register custom `cache` implementations.
+
+Something like:
+```python
+@lib.register_plugin('cache')
+class MyLoader(BaseTokenizer):
+    ...
+```",Plugin system for custom classifier,Would love to see a plugin system so third-party packages can register custom [CODE] implementations. Something like: [CODE],Plugin system for custom classifier Plugin system for custom classifier Would love to see a plugin system so third-party packages can register custom [CODE] implementations. Something like: [CODE]
+71,Memory leak in Processor when processing large files,"I notice memory usage grows unboundedly when using `Model` to process files > 1000MB.
+
+Profile output:
+```
+Model.process(): 2.3GB allocated, not released
+```
+Using fastapi 1.9.0, Windows 11.",bug,2022-10-14T00:44:07Z,"Memory leak in Processor when processing large files I notice memory usage grows unboundedly when using `Model` to process files > 1000MB.
+
+Profile output:
+```
+Model.process(): 2.3GB allocated, not released
+```
+Using fastapi 1.9.0, Windows 11.",Memory leak in Processor when processing large files,"I notice memory usage grows unboundedly when using [CODE] to process files > 1000MB. Profile output: [CODE] Using fastapi 1.9.0, Windows 11.","Memory leak in Processor when processing large files Memory leak in Processor when processing large files I notice memory usage grows unboundedly when using [CODE] to process files > 1000MB. Profile output: [CODE] Using fastapi 1.9.0, Windows 11."
+223,ValueError when encode receives empty input,"`process([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 2.1.0, Python 3.11",bug,2024-04-21T11:53:59Z,"ValueError when encode receives empty input `process([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 2.1.0, Python 3.11",ValueError when encode receives empty input,"[CODE] raises [CODE] instead of returning an empty result. Expected: return [CODE] Actual: raises exception Version 2.1.0, Python 3.11","ValueError when encode receives empty input ValueError when encode receives empty input [CODE] raises [CODE] instead of returning an empty result. Expected: return [CODE] Actual: raises exception Version 2.1.0, Python 3.11"
+52,Is plugin hooks planned for a future release?,"I need batch export for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",question,2022-07-28T03:16:12Z,"Is plugin hooks planned for a future release? I need batch export for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",Is plugin hooks planned for a future release?,"I need batch export for my project. I searched the issues and didn't find any existing discussion. Is this something the maintainers are considering? If not, I might try to submit a PR.","Is plugin hooks planned for a future release? Is plugin hooks planned for a future release? I need batch export for my project. I searched the issues and didn't find any existing discussion. Is this something the maintainers are considering? If not, I might try to submit a PR."
+56,Support async context manager in Loader,"Currently `Pipeline` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Pipeline() as ctx:` for use in asyncio applications.
+
+Related: #50",feature,2022-08-19T03:36:03Z,"Support async context manager in Loader Currently `Pipeline` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Pipeline() as ctx:` for use in asyncio applications.
+
+Related: #50",Support async context manager in Loader,Currently [CODE] only supports synchronous context managers ( [CODE] statement). It would be very useful to support [CODE] for use in asyncio applications. Related: #50,Support async context manager in Loader Support async context manager in Loader Currently [CODE] only supports synchronous context managers ( [CODE] statement). It would be very useful to support [CODE] for use in asyncio applications. Related: #50
+37,How does Cache handle the key doesn't exist?,"I couldn't find documentation on how `Model` behaves when input is None.
+
+For example:
+```python
+result = Model().process(None)  # what happens?
+```
+
+Does it raise, return None, or something else?",question,2022-06-11T08:27:43Z,"How does Cache handle the key doesn't exist? I couldn't find documentation on how `Model` behaves when input is None.
+
+For example:
+```python
+result = Model().process(None)  # what happens?
+```
+
+Does it raise, return None, or something else?",How does Cache handle the key doesn't exist?,"I couldn't find documentation on how [CODE] behaves when input is None. For example: [CODE] Does it raise, return None, or something else?","How does Cache handle the key doesn't exist? How does Cache handle the key doesn't exist? I couldn't find documentation on how [CODE] behaves when input is None. For example: [CODE] Does it raise, return None, or something else?"
+309,Add support for Arrow export format,"It would be great to export results in `Arrow` format in addition to the existing options.
+
+Use case: I'm integrating with Kafka which only accepts Arrow.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2024-03-14T19:32:00Z,"Add support for Arrow export format It would be great to export results in `Arrow` format in addition to the existing options.
+
+Use case: I'm integrating with Kafka which only accepts Arrow.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",Add support for Arrow export format,It would be great to export results in [CODE] format in addition to the existing options. Use case: I'm integrating with Kafka which only accepts Arrow. I'm happy to contribute a PR if the maintainers agree this is worth adding.,Add support for Arrow export format Add support for Arrow export format It would be great to export results in [CODE] format in addition to the existing options. Use case: I'm integrating with Kafka which only accepts Arrow. I'm happy to contribute a PR if the maintainers agree this is worth adding.
+173,What is the recommended way to handle handle connection pooling?,"I have a use case where I need to cache model weights. I see a few possible approaches:
+
+1. Use `connection_pool` — but I'm not sure if it's thread-safe
+2. Use `new Client() per request` — seems more heavyweight
+
+What is the recommended approach? Is there documentation I missed?",question,2023-09-28T17:53:53Z,"What is the recommended way to handle handle connection pooling? I have a use case where I need to cache model weights. I see a few possible approaches:
+
+1. Use `connection_pool` — but I'm not sure if it's thread-safe
+2. Use `new Client() per request` — seems more heavyweight
+
+What is the recommended approach? Is there documentation I missed?",What is the recommended way to handle handle connection pooling?,I have a use case where I need to cache model weights. I see a few possible approaches: 1. Use [CODE] — but I'm not sure if it's thread-safe 2. Use [CODE] — seems more heavyweight What is the recommended approach? Is there documentation I missed?,What is the recommended way to handle handle connection pooling? What is the recommended way to handle handle connection pooling? I have a use case where I need to cache model weights. I see a few possible approaches: 1. Use [CODE] — but I'm not sure if it's thread-safe 2. Use [CODE] — seems more heavyweight What is the recommended approach? Is there documentation I missed?
+174,ValueError when run receives empty input,"`parse([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 2.0.3, Python 3.11",bug,2023-10-11T02:56:31Z,"ValueError when run receives empty input `parse([])` raises `ValueError: list is empty` instead of returning an empty result.
+
+Expected: return `[]`
+Actual: raises exception
+
+Version 2.0.3, Python 3.11",ValueError when run receives empty input,"[CODE] raises [CODE] instead of returning an empty result. Expected: return [CODE] Actual: raises exception Version 2.0.3, Python 3.11","ValueError when run receives empty input ValueError when run receives empty input [CODE] raises [CODE] instead of returning an empty result. Expected: return [CODE] Actual: raises exception Version 2.0.3, Python 3.11"
+49,Broken link in configuration page,"The link to `examples notebook` on the installation page returns 404.
+
+Link: https://docs.example.com/docs/changelog
+
+It seems like the page was moved or renamed.",docs,2022-07-16T09:35:53Z,"Broken link in configuration page The link to `examples notebook` on the installation page returns 404.
+
+Link: https://docs.example.com/docs/changelog
+
+It seems like the page was moved or renamed.",Broken link in configuration page,The link to [CODE] on the installation page returns 404. Link: [URL] It seems like the page was moved or renamed.,Broken link in configuration page Broken link in configuration page The link to [CODE] on the installation page returns 404. Link: [URL] It seems like the page was moved or renamed.
+147,Is batch export planned for a future release?,"I need plugin hooks for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",question,2023-07-10T07:10:45Z,"Is batch export planned for a future release? I need plugin hooks for my project. I searched the issues and didn't find any existing discussion.
+
+Is this something the maintainers are considering? If not, I might try to submit a PR.",Is batch export planned for a future release?,"I need plugin hooks for my project. I searched the issues and didn't find any existing discussion. Is this something the maintainers are considering? If not, I might try to submit a PR.","Is batch export planned for a future release? Is batch export planned for a future release? I need plugin hooks for my project. I searched the issues and didn't find any existing discussion. Is this something the maintainers are considering? If not, I might try to submit a PR."
+101,validate raises AttributeError on Ubuntu 22.04,"Reproduction:
+```python
+from lib import Encoder
+obj = Encoder()
+obj.process()  # AttributeError: 'Encoder' has no attribute 'flush'
+```
+Works fine on macOS, fails on Ubuntu 22.04. Version 0.8.1.",bug,2023-01-23T06:40:28Z,"validate raises AttributeError on Ubuntu 22.04 Reproduction:
+```python
+from lib import Encoder
+obj = Encoder()
+obj.process()  # AttributeError: 'Encoder' has no attribute 'flush'
+```
+Works fine on macOS, fails on Ubuntu 22.04. Version 0.8.1.",validate raises AttributeError on Ubuntu 22.04,"Reproduction: [CODE] Works fine on macOS, fails on Ubuntu 22.04. Version 0.8.1.","validate raises AttributeError on Ubuntu 22.04 validate raises AttributeError on Ubuntu 22.04 Reproduction: [CODE] Works fine on macOS, fails on Ubuntu 22.04. Version 0.8.1."
+152,Race condition in parse under concurrent load,"Under concurrent requests (1000 workers), `fit` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=fit) for _ in range(1000)]
+```
+Version: 1.9.0",bug,2023-08-03T04:33:41Z,"Race condition in parse under concurrent load Under concurrent requests (1000 workers), `fit` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=fit) for _ in range(1000)]
+```
+Version: 1.9.0",Race condition in parse under concurrent load,"Under concurrent requests (1000 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 1.9.0","Race condition in parse under concurrent load Race condition in parse under concurrent load Under concurrent requests (1000 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 1.9.0"
+248,Getting started guide is outdated — still references v2.0.0 API,,docs,2024-07-12T19:24:55Z,Getting started guide is outdated — still references v2.0.0 API ,Getting started guide is outdated — still references v2.0.0 API,,Getting started guide is outdated — still references v2.0.0 API Getting started guide is outdated — still references v2.0.0 API
+212,Memory leak in Model when processing large files,"I notice memory usage grows unboundedly when using `Loader` to process files > 500MB.
+
+Profile output:
+```
+Loader.process(): 2.3GB allocated, not released
+```
+Using httpx 0.8.1, Windows 11.",bug,2024-03-10T21:40:47Z,"Memory leak in Model when processing large files I notice memory usage grows unboundedly when using `Loader` to process files > 500MB.
+
+Profile output:
+```
+Loader.process(): 2.3GB allocated, not released
+```
+Using httpx 0.8.1, Windows 11.",Memory leak in Model when processing large files,"I notice memory usage grows unboundedly when using [CODE] to process files > 500MB. Profile output: [CODE] Using httpx 0.8.1, Windows 11.","Memory leak in Model when processing large files Memory leak in Model when processing large files I notice memory usage grows unboundedly when using [CODE] to process files > 500MB. Profile output: [CODE] Using httpx 0.8.1, Windows 11."
+17,How to use Client with Django?,"I'm trying to integrate `Encoder` with `FastAPI` but I'm not sure how to configure it correctly.
+
+My current code:
+```python
+from lib import Encoder
+from FastAPI import App
+
+app = App()
+# How do I attach Encoder here?
+```
+
+Any examples or pointers would be helpful!",question,2022-03-08T17:57:53Z,"How to use Client with Django? I'm trying to integrate `Encoder` with `FastAPI` but I'm not sure how to configure it correctly.
+
+My current code:
+```python
+from lib import Encoder
+from FastAPI import App
+
+app = App()
+# How do I attach Encoder here?
+```
+
+Any examples or pointers would be helpful!",How to use Client with Django?,I'm trying to integrate [CODE] with [CODE] but I'm not sure how to configure it correctly. My current code: [CODE] Any examples or pointers would be helpful!,How to use Client with Django? How to use Client with Django? I'm trying to integrate [CODE] with [CODE] but I'm not sure how to configure it correctly. My current code: [CODE] Any examples or pointers would be helpful!
+2,Documentation for process is missing return type,"The docstring for `process` doesn't mention what it returns. Looking at the source it returns `list` but this should be documented.
+
+Currently:
+```
+def process(x):
+    """"""Process x.""""""
+```
+
+Expected:
+```
+def process(x) -> list:
+    """"""Process x.
+    Returns: list — ...
+    """"""
+```",docs,2022-01-22T09:17:59Z,"Documentation for process is missing return type The docstring for `process` doesn't mention what it returns. Looking at the source it returns `list` but this should be documented.
+
+Currently:
+```
+def process(x):
+    """"""Process x.""""""
+```
+
+Expected:
+```
+def process(x) -> list:
+    """"""Process x.
+    Returns: list — ...
+    """"""
+```",Documentation for process is missing return type,The docstring for [CODE] doesn't mention what it returns. Looking at the source it returns [CODE] but this should be documented. Currently: [CODE] Expected: [CODE],Documentation for process is missing return type Documentation for process is missing return type The docstring for [CODE] doesn't mention what it returns. Looking at the source it returns [CODE] but this should be documented. Currently: [CODE] Expected: [CODE]
+82,Support async context manager in Client,"Currently `Session` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Session() as ctx:` for use in asyncio applications.
+
+Related: #100",feature,2022-11-29T17:50:01Z,"Support async context manager in Client Currently `Session` only supports synchronous context managers (`with` statement).
+
+It would be very useful to support `async with Session() as ctx:` for use in asyncio applications.
+
+Related: #100",Support async context manager in Client,Currently [CODE] only supports synchronous context managers ( [CODE] statement). It would be very useful to support [CODE] for use in asyncio applications. Related: #100,Support async context manager in Client Support async context manager in Client Currently [CODE] only supports synchronous context managers ( [CODE] statement). It would be very useful to support [CODE] for use in asyncio applications. Related: #100
+163,Add NDCG to metrics output,"The current metrics output includes accuracy and F1 but not precision@k.
+
+precision@k is important for our use case because regulatory compliance.
+
+Would it be possible to add it as an optional output field?",feature,2023-09-05T00:33:23Z,"Add NDCG to metrics output The current metrics output includes accuracy and F1 but not precision@k.
+
+precision@k is important for our use case because regulatory compliance.
+
+Would it be possible to add it as an optional output field?",Add NDCG to metrics output,The current metrics output includes accuracy and F1 but not precision@k. precision@k is important for our use case because regulatory compliance. Would it be possible to add it as an optional output field?,Add NDCG to metrics output Add NDCG to metrics output The current metrics output includes accuracy and F1 but not precision@k. precision@k is important for our use case because regulatory compliance. Would it be possible to add it as an optional output field?
+19,Add precision@k to metrics output,"The current metrics output includes accuracy and F1 but not NDCG.
+
+NDCG is important for our use case because imbalanced datasets.
+
+Would it be possible to add it as an optional output field?",feature,2022-03-16T10:00:41Z,"Add precision@k to metrics output The current metrics output includes accuracy and F1 but not NDCG.
+
+NDCG is important for our use case because imbalanced datasets.
+
+Would it be possible to add it as an optional output field?",Add precision@k to metrics output,The current metrics output includes accuracy and F1 but not NDCG. NDCG is important for our use case because imbalanced datasets. Would it be possible to add it as an optional output field?,Add precision@k to metrics output Add precision@k to metrics output The current metrics output includes accuracy and F1 but not NDCG. NDCG is important for our use case because imbalanced datasets. Would it be possible to add it as an optional output field?
+4,Race condition in save under concurrent load,"Under concurrent requests (1000 workers), `encode` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=encode) for _ in range(1000)]
+```
+Version: 2.0.3",bug,2022-02-09T10:49:10Z,"Race condition in save under concurrent load Under concurrent requests (1000 workers), `encode` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=encode) for _ in range(1000)]
+```
+Version: 2.0.3",Race condition in save under concurrent load,"Under concurrent requests (1000 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 2.0.3","Race condition in save under concurrent load Race condition in save under concurrent load Under concurrent requests (1000 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 2.0.3"
+125,How to use Cache with Django?,"I'm trying to integrate `Client` with `Flask` but I'm not sure how to configure it correctly.
+
+My current code:
+```python
+from lib import Client
+from Flask import App
+
+app = App()
+# How do I attach Client here?
+```
+
+Any examples or pointers would be helpful!",question,2023-04-25T19:29:26Z,"How to use Cache with Django? I'm trying to integrate `Client` with `Flask` but I'm not sure how to configure it correctly.
+
+My current code:
+```python
+from lib import Client
+from Flask import App
+
+app = App()
+# How do I attach Client here?
+```
+
+Any examples or pointers would be helpful!",How to use Cache with Django?,I'm trying to integrate [CODE] with [CODE] but I'm not sure how to configure it correctly. My current code: [CODE] Any examples or pointers would be helpful!,How to use Cache with Django? How to use Cache with Django? I'm trying to integrate [CODE] with [CODE] but I'm not sure how to configure it correctly. My current code: [CODE] Any examples or pointers would be helpful!
+106,Add support for CSV export format,"It would be great to export results in `HDF5` format in addition to the existing options.
+
+Use case: I'm integrating with Airflow which only accepts HDF5.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",feature,2023-02-23T21:11:47Z,"Add support for CSV export format It would be great to export results in `HDF5` format in addition to the existing options.
+
+Use case: I'm integrating with Airflow which only accepts HDF5.
+
+I'm happy to contribute a PR if the maintainers agree this is worth adding.",Add support for CSV export format,It would be great to export results in [CODE] format in addition to the existing options. Use case: I'm integrating with Airflow which only accepts HDF5. I'm happy to contribute a PR if the maintainers agree this is worth adding.,Add support for CSV export format Add support for CSV export format It would be great to export results in [CODE] format in addition to the existing options. Use case: I'm integrating with Airflow which only accepts HDF5. I'm happy to contribute a PR if the maintainers agree this is worth adding.
+84,README installation instructions don't work on macOS 14,"Following the README installation steps on Ubuntu 22.04 fails at:
+```
+pip install lib[extra]
+error: Microsoft Visual C++ 14.0 required
+```
+
+The README should document the Ubuntu 22.04-specific prerequisites.",docs,2022-12-10T09:32:03Z,"README installation instructions don't work on macOS 14 Following the README installation steps on Ubuntu 22.04 fails at:
+```
+pip install lib[extra]
+error: Microsoft Visual C++ 14.0 required
+```
+
+The README should document the Ubuntu 22.04-specific prerequisites.",README installation instructions don't work on macOS 14,Following the README installation steps on Ubuntu 22.04 fails at: [CODE] The README should document the Ubuntu 22.04-specific prerequisites.,README installation instructions don't work on macOS 14 README installation instructions don't work on macOS 14 Following the README installation steps on Ubuntu 22.04 fails at: [CODE] The README should document the Ubuntu 22.04-specific prerequisites.
+76,Race condition in save under concurrent load,"Under concurrent requests (50 workers), `save` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=save) for _ in range(50)]
+```
+Version: 2.0.3",bug,2022-11-02T01:41:18Z,"Race condition in save under concurrent load Under concurrent requests (50 workers), `save` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=save) for _ in range(50)]
+```
+Version: 2.0.3",Race condition in save under concurrent load,"Under concurrent requests (50 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 2.0.3","Race condition in save under concurrent load Race condition in save under concurrent load Under concurrent requests (50 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 2.0.3"
+5,Race condition in encode under concurrent load,"Under concurrent requests (1000 workers), `load` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=load) for _ in range(1000)]
+```
+Version: 1.9.0",bug,2022-02-11T21:23:56Z,"Race condition in encode under concurrent load Under concurrent requests (1000 workers), `load` occasionally returns stale data or raises `RuntimeError: dictionary changed size`.
+
+Reproduction script:
+```python
+import threading
+threads = [threading.Thread(target=load) for _ in range(1000)]
+```
+Version: 1.9.0",Race condition in encode under concurrent load,"Under concurrent requests (1000 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 1.9.0","Race condition in encode under concurrent load Race condition in encode under concurrent load Under concurrent requests (1000 workers), [CODE] occasionally returns stale data or raises [CODE] . Reproduction script: [CODE] Version: 1.9.0"

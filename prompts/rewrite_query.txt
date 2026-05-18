@@ -1,0 +1,10 @@
+Rewrite the following GitHub issue search query to maximize retrieval of relevant documentation and resolved issues.
+
+Rules:
+- Expand abbreviations and acronyms
+- Add synonyms for technical terms where helpful
+- Make implicit concepts explicit (e.g. "crashes" → "crashes error exception traceback")
+- Keep it concise — one sentence, no bullet points
+- Output only the rewritten query, nothing else
+
+Query: {{query}}
