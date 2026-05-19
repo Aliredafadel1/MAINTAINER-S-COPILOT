@@ -28,19 +28,19 @@ class ClassifyResponse(BaseModel):
 @router.post("/classify", response_model=ClassifyResponse)
 def classify(req: ClassifyRequest, request: Request):
     state = request.app.state
-    tokenizer = state.tokenizer
-    model = state.model
-    model_name = state.model_name
+
+    if state.model is None:
+        return classify_llm(req, request)
 
     with state.tracer.start_as_current_span(
-        "classify", attributes={"model": model_name, "input_chars": len(req.text)}
+        "classify", attributes={"model": state.model_name, "input_chars": len(req.text)}
     ):
-        inputs = tokenizer(
+        inputs = state.tokenizer(
             req.text, return_tensors="pt", truncation=True, max_length=512, padding=True
         )
         t0 = time.perf_counter()
         with torch.no_grad():
-            logits = model(**inputs).logits
+            logits = state.model(**inputs).logits
         latency_ms = (time.perf_counter() - t0) * 1000
 
         probs = torch.softmax(logits, dim=-1)[0].tolist()

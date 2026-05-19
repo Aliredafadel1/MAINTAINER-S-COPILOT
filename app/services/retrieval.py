@@ -47,11 +47,11 @@ async def _dense_search(
     rows = await session.execute(
         text(f"""
             SELECT id::text, content, source_type, source_id, chunk_index, metadata,
-                   1 - (embedding <=> :vec::vector) AS score
+                   1 - (embedding <=> CAST(:vec AS vector)) AS score
             FROM corpus_chunks
             WHERE embedding IS NOT NULL
             {filter_clause}
-            ORDER BY embedding <=> :vec::vector
+            ORDER BY embedding <=> CAST(:vec AS vector)
             LIMIT :k
         """),
         params,

@@ -62,14 +62,12 @@ def _verify_sha256(model_dir: str) -> None:
     card_path = os.path.join(model_dir, "model_card.json")
     weights_path = os.path.join(model_dir, "model.safetensors")
     if not os.path.exists(card_path) or not os.path.exists(weights_path):
-        log.error("classifier_files_missing")
-        sys.exit(1)
+        raise FileNotFoundError("classifier_files_missing")
     card = json.loads(open(card_path).read())
     expected = card.get("weights_sha256", "")
     actual = hashlib.sha256(open(weights_path, "rb").read()).hexdigest()
     if expected != actual:
-        log.error("sha256_mismatch", expected=expected[:12], actual=actual[:12])
-        sys.exit(1)
+        raise ValueError(f"sha256_mismatch expected={expected[:12]} actual={actual[:12]}")
     log.info("sha256_ok", sha=actual[:12])
 
 
@@ -90,16 +88,20 @@ async def lifespan(app: FastAPI):
     minio_endpoint = os.environ["MINIO_ENDPOINT"]
     classifier_dir = "/tmp/classifier"
 
-    log.info("downloading_classifier")
-    _download_classifier(minio_endpoint, secrets["MINIO_ACCESS_KEY"], secrets["MINIO_SECRET_KEY"], classifier_dir)
-    _verify_sha256(classifier_dir)
-
-    log.info("loading_classifier")
-    tokenizer = DistilBertTokenizerFast.from_pretrained(classifier_dir)
-    classifier = DistilBertForSequenceClassification.from_pretrained(classifier_dir)
-    classifier.eval()
-    if torch.cuda.is_available():
-        classifier = classifier.cuda()
+    tokenizer = None
+    classifier = None
+    try:
+        log.info("downloading_classifier")
+        _download_classifier(minio_endpoint, secrets["MINIO_ACCESS_KEY"], secrets["MINIO_SECRET_KEY"], classifier_dir)
+        _verify_sha256(classifier_dir)
+        log.info("loading_classifier")
+        tokenizer = DistilBertTokenizerFast.from_pretrained(classifier_dir)
+        classifier = DistilBertForSequenceClassification.from_pretrained(classifier_dir)
+        classifier.eval()
+        if torch.cuda.is_available():
+            classifier = classifier.cuda()
+    except Exception as e:
+        log.warning("classifier_unavailable_using_llm_fallback", reason=str(e))
 
     # Classical model (optional — skip if not uploaded yet)
     classical_pipeline = None
@@ -120,10 +122,13 @@ async def lifespan(app: FastAPI):
     log.info("loading_cross_encoder", name=CROSS_ENCODER_NAME)
     cross_encoder = CrossEncoder(CROSS_ENCODER_NAME)
 
-    card = json.loads(open(os.path.join(classifier_dir, "model_card.json")).read())
+    model_name = "distilbert-base-uncased"
+    if classifier is not None:
+        card = json.loads(open(os.path.join(classifier_dir, "model_card.json")).read())
+        model_name = card.get("architecture", model_name)
     app.state.tokenizer = tokenizer
     app.state.model = classifier
-    app.state.model_name = card.get("architecture", "distilbert-base-uncased")
+    app.state.model_name = model_name
     app.state.classical_pipeline = classical_pipeline
     app.state.embed_model = embed_model
     app.state.cross_encoder = cross_encoder

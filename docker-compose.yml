@@ -79,6 +79,7 @@ services:
     environment:
       VAULT_ADDR: http://vault:8200
       VAULT_ROOT_TOKEN: ${VAULT_ROOT_TOKEN}
+      SEED_LLM_API_KEY: ${SEED_LLM_API_KEY}
     depends_on:
       vault:
         condition: service_healthy
@@ -119,6 +120,8 @@ services:
       MINIO_ENDPOINT: minio:9000
       OTLP_ENDPOINT: http://jaeger:4317
       MODELSERVER_URL: http://modelserver:8001
+    volumes:
+      - ./app:/app/app:ro
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -143,6 +146,9 @@ services:
       OTLP_ENDPOINT: http://jaeger:4317
     volumes:
       - ./prompts:/app/prompts:ro
+      - ./services/modelserver/main.py:/app/main.py:ro
+      - ./services/modelserver/routes:/app/routes:ro
+      - hf_cache:/root/.cache/huggingface
     depends_on:
       seed-vault:
         condition: service_completed_successfully
@@ -181,3 +187,4 @@ services:
 volumes:
   db_data:
   minio_data:
+  hf_cache:
