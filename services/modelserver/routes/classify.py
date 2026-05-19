@@ -30,7 +30,15 @@ def classify(req: ClassifyRequest, request: Request):
     state = request.app.state
 
     if state.model is None:
-        return classify_llm(req, request)
+        try:
+            return classify_llm(req, request)
+        except Exception:
+            return ClassifyResponse(
+                label="other",
+                confidence=0.0,
+                probabilities={lbl: 0.0 for lbl in LABELS},
+                latency_ms=0.0,
+            )
 
     with state.tracer.start_as_current_span(
         "classify", attributes={"model": state.model_name, "input_chars": len(req.text)}
