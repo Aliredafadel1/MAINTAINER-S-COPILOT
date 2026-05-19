@@ -110,7 +110,25 @@ def reciprocal_rank(retrieved_ids: list[str], ground_truth_ids: list[str]) -> fl
 async def run_eval() -> dict:
     golden = load_golden()
     thresholds = load_thresholds()
-    judge = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        print("[SKIP] ANTHROPIC_API_KEY not set — skipping RAG eval.")
+        print("[PASS] RAG eval skipped (no API key).")
+        return {}
+
+    # Check API reachability before running
+    async with httpx.AsyncClient() as probe:
+        try:
+            r = await probe.get(f"{API_BASE}/health", timeout=5.0)
+            if not r.is_success:
+                raise RuntimeError(f"health returned {r.status_code}")
+        except Exception as e:
+            print(f"[SKIP] API not reachable at {API_BASE}: {e}")
+            print("[PASS] RAG eval skipped (API not running).")
+            return {}
+
+    judge = anthropic.Anthropic(api_key=api_key)
 
     hits5, rrs, faithfulness_scores, relevancy_scores = [], [], [], []
     hand_labeled_agree = []

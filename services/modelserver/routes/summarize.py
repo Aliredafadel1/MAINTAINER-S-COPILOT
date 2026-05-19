@@ -6,7 +6,9 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
-PROMPT_PATH = Path(__file__).parent.parent.parent.parent / "prompts" / "summarize_issue.txt"
+PROMPT_PATH = (
+    Path(__file__).parent.parent.parent.parent / "prompts" / "summarize_issue.txt"
+)
 
 
 class SummarizeRequest(BaseModel):

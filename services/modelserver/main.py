@@ -48,10 +48,16 @@ def _load_vault_secrets() -> dict:
     return data["data"]["data"]
 
 
-def _download_classifier(minio_endpoint: str, access_key: str, secret_key: str, local_dir: str) -> None:
-    client = Minio(minio_endpoint, access_key=access_key, secret_key=secret_key, secure=False)
+def _download_classifier(
+    minio_endpoint: str, access_key: str, secret_key: str, local_dir: str
+) -> None:
+    client = Minio(
+        minio_endpoint, access_key=access_key, secret_key=secret_key, secure=False
+    )
     os.makedirs(local_dir, exist_ok=True)
-    for obj in client.list_objects(CLASSIFIER_BUCKET, prefix=CLASSIFIER_PREFIX + "/", recursive=True):
+    for obj in client.list_objects(
+        CLASSIFIER_BUCKET, prefix=CLASSIFIER_PREFIX + "/", recursive=True
+    ):
         rel = obj.object_name[len(CLASSIFIER_PREFIX) + 1:]
         dest = os.path.join(local_dir, rel)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
@@ -67,7 +73,9 @@ def _verify_sha256(model_dir: str) -> None:
     expected = card.get("weights_sha256", "")
     actual = hashlib.sha256(open(weights_path, "rb").read()).hexdigest()
     if expected != actual:
-        raise ValueError(f"sha256_mismatch expected={expected[:12]} actual={actual[:12]}")
+        raise ValueError(
+            f"sha256_mismatch expected={expected[:12]} actual={actual[:12]}"
+        )
     log.info("sha256_ok", sha=actual[:12])
 
 
@@ -75,7 +83,9 @@ def _setup_tracing(service_name: str) -> trace.Tracer:
     endpoint = os.environ.get("OTLP_ENDPOINT", "http://localhost:4317")
     resource = Resource.create({"service.name": service_name})
     provider = TracerProvider(resource=resource)
-    provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter(endpoint=endpoint, insecure=True)))
+    provider.add_span_processor(
+        BatchSpanProcessor(OTLPSpanExporter(endpoint=endpoint, insecure=True))
+    )
     trace.set_tracer_provider(provider)
     FastAPIInstrumentor().instrument()
     return trace.get_tracer(service_name)
@@ -92,7 +102,12 @@ async def lifespan(app: FastAPI):
     classifier = None
     try:
         log.info("downloading_classifier")
-        _download_classifier(minio_endpoint, secrets["MINIO_ACCESS_KEY"], secrets["MINIO_SECRET_KEY"], classifier_dir)
+        _download_classifier(
+            minio_endpoint,
+            secrets["MINIO_ACCESS_KEY"],
+            secrets["MINIO_SECRET_KEY"],
+            classifier_dir,
+        )
         _verify_sha256(classifier_dir)
         log.info("loading_classifier")
         tokenizer = DistilBertTokenizerFast.from_pretrained(classifier_dir)
@@ -106,10 +121,16 @@ async def lifespan(app: FastAPI):
     # Classical model (optional — skip if not uploaded yet)
     classical_pipeline = None
     try:
-        import joblib
         import io as _io
-        minio_c = Minio(minio_endpoint, access_key=secrets["MINIO_ACCESS_KEY"],
-                        secret_key=secrets["MINIO_SECRET_KEY"], secure=False)
+
+        import joblib
+
+        minio_c = Minio(
+            minio_endpoint,
+            access_key=secrets["MINIO_ACCESS_KEY"],
+            secret_key=secrets["MINIO_SECRET_KEY"],
+            secure=False,
+        )
         resp = minio_c.get_object("models", "classical/pipeline.joblib")
         classical_pipeline = joblib.load(_io.BytesIO(resp.read()))
         log.info("classical_model_loaded")

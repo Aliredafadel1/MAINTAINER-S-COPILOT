@@ -12,7 +12,9 @@ VAULT_TOKEN = os.environ.get("VAULT_ROOT_TOKEN")
 if VAULT_ADDR and VAULT_TOKEN:
     try:
         client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
-        data = client.secrets.kv.v2.read_secret_version(path="app", mount_point="secret")
+        data = client.secrets.kv.v2.read_secret_version(
+            path="app", mount_point="secret"
+        )
         os.environ["DB_PASSWORD"] = data["data"]["data"]["DB_PASSWORD"]
     except Exception as exc:
         print(f"cannot read DB_PASSWORD from Vault: {exc}", file=sys.stderr)

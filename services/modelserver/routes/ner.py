@@ -9,7 +9,9 @@ router = APIRouter()
 _VERSION_RE = re.compile(r"\bv?\d+\.\d+(?:\.\d+)*(?:[-+]\w+)?\b")
 _GH_REF_RE = re.compile(r"#\d+|PR\s*#\d+|issue\s*#\d+", re.IGNORECASE)
 _FILE_PATH_RE = re.compile(r"(?:[a-zA-Z]:[\\/]|\.{0,2}[/\\])[\w/\\.\-]+\.\w{1,6}")
-_ERROR_CODE_RE = re.compile(r"\b[A-Z][A-Z_0-9]{2,}(?:Error|Exception|Warning)\b|\bE\d{3,4}\b")
+_ERROR_CODE_RE = re.compile(
+    r"\b[A-Z][A-Z_0-9]{2,}(?:Error|Exception|Warning)\b|\bE\d{3,4}\b"
+)
 
 
 class NERRequest(BaseModel):
