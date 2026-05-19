@@ -17,7 +17,12 @@ target_metadata = Base.metadata
 
 
 def get_url() -> str:
-    """Build sync URL from env — migrate container gets DB_PASSWORD from Vault via migrate.py."""
+    """Build sync URL from env — accepts DATABASE_URL or individual DB_* vars."""
+    if url := os.environ.get("DATABASE_URL"):
+        # Normalise asyncpg/postgres schemes to psycopg2
+        return url.replace("postgresql+asyncpg://", "postgresql+psycopg2://").replace(
+            "postgres://", "postgresql+psycopg2://"
+        )
     password = os.environ["DB_PASSWORD"]
     host = os.environ["DB_HOST"]
     port = os.environ.get("DB_PORT", "5432")
