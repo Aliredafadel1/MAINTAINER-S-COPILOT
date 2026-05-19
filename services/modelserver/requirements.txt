@@ -12,3 +12,4 @@ opentelemetry-exporter-otlp-proto-grpc==1.27.0
 opentelemetry-instrumentation-fastapi==0.48b0
 structlog==24.4.0
 pydantic==2.9.2
+setuptools>=70.0.0,<72

@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+# setuptools must come last — pip's resolver can downgrade it during the main install
+RUN pip install --no-cache-dir "setuptools>=70.0.0,<72"
 
 COPY . .
 
