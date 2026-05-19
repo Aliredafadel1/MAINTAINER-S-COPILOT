@@ -141,10 +141,16 @@ async def search(
         retrieval_query = query
         if rewrite:
             with span("retrieval.rewrite"):
-                retrieval_query = await _rewrite_query(query)
+                try:
+                    retrieval_query = await _rewrite_query(query)
+                except Exception:
+                    pass  # fall back to original query if LLM unavailable
 
         with span("retrieval.embed"):
-            query_vec = await embeddings.embed(retrieval_query)
+            try:
+                query_vec = await embeddings.embed(retrieval_query)
+            except Exception:
+                return []  # no embeddings = no dense results, return early
 
         fetch_k = max(top_k * 4, 20)  # fetch more, rerank down to top_k
 
@@ -160,9 +166,12 @@ async def search(
 
         with span("retrieval.rerank", candidates=len(fused)):
             passages = [c.content for c in fused]
-            scores = await embeddings.rerank(retrieval_query, passages)
-            for chunk, score in zip(fused, scores):
-                chunk.score = score
+            try:
+                scores = await embeddings.rerank(retrieval_query, passages)
+                for chunk, score in zip(fused, scores):
+                    chunk.score = score
+            except Exception:
+                pass  # keep original scores if reranker unavailable
 
         fused.sort(key=lambda c: c.score, reverse=True)
         return fused[:top_k]
