@@ -42,7 +42,10 @@ async def stream_response(
     await session.commit()
 
     # 2. Recall relevant long-term memory to inject into context
-    memories = await memory_long.recall(session, user_id, user_message, top_k=3)
+    try:
+        memories = await memory_long.recall(session, user_id, user_message, top_k=3)
+    except Exception:
+        memories = []
     memory_block = ""
     if memories:
         memory_block = "\n\nRelevant memories:\n" + "\n".join(
