@@ -131,12 +131,15 @@ async def dispatch(
         with span(
             "tool.write_memory", memory_type=tool_input.get("memory_type", "semantic")
         ):
-            await memory_long.save(
-                session,
-                user_id=user_id,
-                content=tool_input["content"],
-                memory_type=tool_input.get("memory_type", "semantic"),
-            )
+            try:
+                await memory_long.save(
+                    session,
+                    user_id=user_id,
+                    content=tool_input["content"],
+                    memory_type=tool_input.get("memory_type", "semantic"),
+                )
+            except Exception:
+                return "Memory save failed (embedding service unavailable)."
         return "Memory saved."
 
     return f"Unknown tool: {tool_name}"

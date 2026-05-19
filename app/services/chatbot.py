@@ -127,3 +127,15 @@ async def stream_response(
     await conv_repo.add_message(session, conversation_id, "assistant", final_text)
     await memory_short.append_message(conversation_id, "assistant", final_text)
     await session.commit()
+
+    # 7. Auto-save conversation turn to long-term memory
+    try:
+        await memory_long.save(
+            session,
+            user_id=user_id,
+            content=f"User: {user_message}\nAssistant: {final_text}",
+            memory_type="semantic",
+        )
+        await session.commit()
+    except Exception:
+        pass
