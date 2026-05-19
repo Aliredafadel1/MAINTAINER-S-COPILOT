@@ -78,9 +78,10 @@ def predict_distilbert(items: list[dict], modelserver_url: str) -> list[str]:
     predictions = []
     for item in items:
         try:
+            text = f"{item.get('title', '')} {item.get('body', '')}".strip()
             resp = requests.post(
                 f"{modelserver_url}/classify",
-                json={"title": item["title"], "body": item["body"]},
+                json={"text": text},
                 timeout=15,
             )
             resp.raise_for_status()
@@ -95,9 +96,10 @@ def predict_classical(items: list[dict], modelserver_url: str) -> list[str]:
     predictions = []
     for item in items:
         try:
+            text = f"{item.get('title', '')} {item.get('body', '')}".strip()
             resp = requests.post(
                 f"{modelserver_url}/classify/classical",
-                json={"title": item["title"], "body": item["body"]},
+                json={"text": text},
                 timeout=10,
             )
             resp.raise_for_status()
@@ -112,9 +114,10 @@ def predict_llm(items: list[dict], modelserver_url: str) -> list[str]:
     predictions = []
     for item in items:
         try:
+            text = f"{item.get('title', '')} {item.get('body', '')}".strip()
             resp = requests.post(
                 f"{modelserver_url}/classify/llm",
-                json={"title": item["title"], "body": item["body"]},
+                json={"text": text},
                 timeout=30,
             )
             resp.raise_for_status()
