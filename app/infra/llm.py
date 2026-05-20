@@ -1,6 +1,8 @@
 import time
 
 import anthropic
+from anthropic.types import MessageParam, TextBlock
+
 from app.infra import vault
 from app.infra.redaction import redact
 
@@ -16,14 +18,14 @@ async def complete(prompt: str, system: str = "", max_tokens: int = 512) -> str:
     from app.infra.tracing import span
 
     client = get_client()
-    messages = [{"role": "user", "content": prompt}]
+    messages: list[MessageParam] = [{"role": "user", "content": prompt}]
 
     t0 = time.perf_counter()
     with span("llm.complete", model=_MODEL, max_tokens=max_tokens) as s:
         response = client.messages.create(
             model=_MODEL,
             max_tokens=max_tokens,
-            system=system if system else anthropic.NOT_GIVEN,
+            system=system if system else anthropic.NOT_GIVEN,  # type: ignore[arg-type]
             messages=messages,
         )
         latency_ms = int((time.perf_counter() - t0) * 1000)
@@ -31,4 +33,5 @@ async def complete(prompt: str, system: str = "", max_tokens: int = 512) -> str:
         s.set_attribute("llm.completion_tokens", response.usage.output_tokens)
         s.set_attribute("llm.latency_ms", latency_ms)
         s.set_attribute("llm.prompt_preview", redact(prompt[:200]))
-        return response.content[0].text.strip()
+        text = next((b.text for b in response.content if isinstance(b, TextBlock)), "")
+        return text.strip()

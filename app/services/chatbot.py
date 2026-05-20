@@ -5,7 +5,10 @@ from collections.abc import AsyncIterator
 from pathlib import Path
 from uuid import UUID
 
+from typing import Any, cast
+
 import anthropic
+from anthropic.types import ToolUseBlock
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.infra import vault
@@ -74,8 +77,8 @@ async def stream_response(
             model=_MODEL,
             max_tokens=1024,
             system=_system(),
-            tools=tool_defs,
-            messages=messages,
+            tools=tool_defs,  # type: ignore[arg-type]
+            messages=messages,  # type: ignore[arg-type]
         )
 
         if response.stop_reason == "end_turn":
@@ -90,9 +93,9 @@ async def stream_response(
             # Execute all tool calls
             tool_results = []
             for block in response.content:
-                if block.type == "tool_use":
+                if isinstance(block, ToolUseBlock):
                     result = await tools.dispatch(
-                        block.name, block.input, session, user_id
+                        block.name, cast(dict[str, Any], block.input), session, user_id
                     )
                     tool_results.append(
                         {
