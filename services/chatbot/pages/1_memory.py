@@ -28,7 +28,9 @@ else:
         col1.markdown(f"**[{mem['memory_type']}]** {mem['content']}")
         col1.caption(mem["created_at"])
         if col2.button("Delete", key=mem["id"]):
-            dr = requests.delete(f"{API_URL}/memory/{mem['id']}", headers=headers, timeout=10)
+            dr = requests.delete(
+                f"{API_URL}/memory/{mem['id']}", headers=headers, timeout=10
+            )
             if dr.ok:
                 st.rerun()
             else:

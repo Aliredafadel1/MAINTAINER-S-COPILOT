@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 from contextlib import asynccontextmanager
 
 import hvac
@@ -40,12 +41,24 @@ CLASSIFIER_PREFIX = "classifier"
 def _load_vault_secrets() -> dict:
     addr = os.environ["VAULT_ADDR"]
     token = os.environ["VAULT_ROOT_TOKEN"]
-    client = hvac.Client(url=addr, token=token)
-    if not client.is_authenticated():
-        log.error("vault_auth_failed")
-        sys.exit(1)
-    data = client.secrets.kv.v2.read_secret_version(path="app", mount_point="secret")
-    return data["data"]["data"]
+    last_exc: Exception | None = None
+    for attempt in range(1, 11):
+        try:
+            client = hvac.Client(url=addr, token=token)
+            if not client.is_authenticated():
+                log.error("vault_auth_failed")
+                sys.exit(1)
+            data = client.secrets.kv.v2.read_secret_version(
+                path="app", mount_point="secret"
+            )
+            return data["data"]["data"]
+        except Exception as exc:
+            last_exc = exc
+            log.warning("vault_retry", attempt=attempt, error=str(exc))
+            if attempt < 10:
+                time.sleep(3)
+    log.error("vault_failed", error=str(last_exc))
+    sys.exit(1)
 
 
 def _download_classifier(
@@ -58,7 +71,7 @@ def _download_classifier(
     for obj in client.list_objects(
         CLASSIFIER_BUCKET, prefix=CLASSIFIER_PREFIX + "/", recursive=True
     ):
-        rel = obj.object_name[len(CLASSIFIER_PREFIX) + 1:]
+        rel = obj.object_name[len(CLASSIFIER_PREFIX) + 1 :]
         dest = os.path.join(local_dir, rel)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         client.fget_object(CLASSIFIER_BUCKET, obj.object_name, dest)

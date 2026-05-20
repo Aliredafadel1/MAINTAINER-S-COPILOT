@@ -25,8 +25,7 @@ def _render_prompt(title: str, body: str, comments: list[str]) -> str:
     template = PROMPT_PATH.read_text()
     comments_block = "\n".join(f"- {c}" for c in comments[:10]) if comments else ""
     return (
-        template
-        .replace("{{title}}", title)
+        template.replace("{{title}}", title)
         .replace("{{body}}", body[:1200])
         .replace("{{comments}}", comments_block)
         .replace("{% if comments %}", "")

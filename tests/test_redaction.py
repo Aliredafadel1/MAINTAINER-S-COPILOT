@@ -2,7 +2,7 @@
 
 These run in CI on every push. A failure here blocks merge.
 """
-import pytest
+
 from app.infra.redaction import redact, redact_dict
 
 PLACEHOLDER = "[REDACTED]"

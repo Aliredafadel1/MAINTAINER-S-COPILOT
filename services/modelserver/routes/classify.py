@@ -85,6 +85,7 @@ def classify_classical(req: ClassifyRequest, request: Request):
 @router.post("/classify/llm", response_model=ClassifyResponse)
 def classify_llm(req: ClassifyRequest, request: Request):
     import anthropic
+
     api_key = request.app.state.llm_api_key
     client = anthropic.Anthropic(api_key=api_key)
 

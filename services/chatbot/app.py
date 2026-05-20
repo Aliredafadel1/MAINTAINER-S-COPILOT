@@ -22,14 +22,22 @@ if "token" not in st.session_state:
     password = st.text_input("Password", type="password")
     col1, col2 = st.columns(2)
     if col1.button("Login"):
-        r = requests.post(f"{API_URL}/auth/login", json={"email": email, "password": password}, timeout=10)
+        r = requests.post(
+            f"{API_URL}/auth/login",
+            json={"email": email, "password": password},
+            timeout=10,
+        )
         if r.ok:
             st.session_state["token"] = r.json()["access_token"]
             st.rerun()
         else:
             st.error(r.json().get("message", "Login failed"))
     if col2.button("Register"):
-        r = requests.post(f"{API_URL}/auth/register", json={"email": email, "password": password}, timeout=10)
+        r = requests.post(
+            f"{API_URL}/auth/register",
+            json={"email": email, "password": password},
+            timeout=10,
+        )
         if r.ok:
             st.session_state["token"] = r.json()["access_token"]
             st.rerun()
@@ -59,7 +67,10 @@ if prompt := st.chat_input("Ask about an issue, paste a thread, or search docsâ€
         full_text = ""
         with requests.post(
             f"{API_URL}/chat/stream",
-            json={"message": prompt, "conversation_id": st.session_state["conversation_id"]},
+            json={
+                "message": prompt,
+                "conversation_id": st.session_state["conversation_id"],
+            },
             headers=_headers(),
             stream=True,
             timeout=60,

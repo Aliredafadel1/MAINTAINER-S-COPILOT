@@ -29,7 +29,9 @@ for w in widgets:
 st.divider()
 st.subheader("Create new widget")
 name = st.text_input("Name")
-origins_raw = st.text_input("Allowed origins (comma-separated)", placeholder="https://myproject.com")
+origins_raw = st.text_input(
+    "Allowed origins (comma-separated)", placeholder="https://myproject.com"
+)
 
 if st.button("Create"):
     origins = [o.strip() for o in origins_raw.split(",") if o.strip()]

@@ -4,6 +4,7 @@ Revision ID: 0002
 Revises: 0001
 Create Date: 2026-05-18
 """
+
 from alembic import op
 import sqlalchemy as sa
 from pgvector.sqlalchemy import Vector
@@ -19,14 +20,24 @@ EMBEDDING_DIM = 768
 def upgrade() -> None:
     op.create_table(
         "corpus_chunks",
-        sa.Column("id", sa.UUID(), primary_key=True, server_default=sa.text("gen_random_uuid()")),
+        sa.Column(
+            "id",
+            sa.UUID(),
+            primary_key=True,
+            server_default=sa.text("gen_random_uuid()"),
+        ),
         sa.Column("source_type", sa.String(50), nullable=False),
         sa.Column("source_id", sa.String(255), nullable=False),
         sa.Column("chunk_index", sa.Integer(), nullable=False),
         sa.Column("content", sa.Text(), nullable=False),
         sa.Column("metadata", sa.JSON(), nullable=False, server_default="{}"),
         sa.Column("embedding", Vector(EMBEDDING_DIM), nullable=True),
-        sa.Column("created_at", sa.TIMESTAMP(timezone=True), nullable=False, server_default=sa.text("now()")),
+        sa.Column(
+            "created_at",
+            sa.TIMESTAMP(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
     )
 
     # GIN index for full-text (sparse) search
@@ -35,7 +46,12 @@ def upgrade() -> None:
         ADD COLUMN content_tsv TSVECTOR
         GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
     """)
-    op.create_index("ix_corpus_chunks_content_tsv", "corpus_chunks", ["content_tsv"], postgresql_using="gin")
+    op.create_index(
+        "ix_corpus_chunks_content_tsv",
+        "corpus_chunks",
+        ["content_tsv"],
+        postgresql_using="gin",
+    )
 
     # HNSW index for fast ANN vector search (pgvector >= 0.5)
     op.execute("""
@@ -45,7 +61,9 @@ def upgrade() -> None:
         WITH (m = 16, ef_construction = 64)
     """)
 
-    op.create_index("ix_corpus_chunks_source", "corpus_chunks", ["source_type", "source_id"])
+    op.create_index(
+        "ix_corpus_chunks_source", "corpus_chunks", ["source_type", "source_id"]
+    )
 
     # Resize memories.embedding from 1536 → 768 to match local embedding model
     op.execute("ALTER TABLE memories DROP COLUMN IF EXISTS embedding")
