@@ -253,7 +253,10 @@ CORPUS: list[dict] = [
             "client constructor so retries wait longer between attempts: "
             "`Client(max_retries=5, backoff_factor=1.0)`."
         ),
-        "metadata": {"title": "ConnectionError when using async client with retry=3", "issue_id": "142"},
+        "metadata": {
+            "title": "ConnectionError when using async client with retry=3",
+            "issue_id": "142",
+        },
     },
     {
         "source_type": "issue",
@@ -267,7 +270,10 @@ CORPUS: list[dict] = [
             "for lists of strings. The `encode()` method accepts a single string only. "
             "This is consistent with the HuggingFace tokenizers API."
         ),
-        "metadata": {"title": "TypeError when passing list to encode()", "issue_id": "201"},
+        "metadata": {
+            "title": "TypeError when passing list to encode()",
+            "issue_id": "201",
+        },
     },
     {
         "source_type": "issue",
@@ -282,7 +288,10 @@ CORPUS: list[dict] = [
             "`torch.cuda.empty_cache()` and `gc.collect()` after each batch, "
             "or use a context manager: `with client.no_cache(): ...`"
         ),
-        "metadata": {"title": "Memory leak in batch processing loop", "issue_id": "287"},
+        "metadata": {
+            "title": "Memory leak in batch processing loop",
+            "issue_id": "287",
+        },
     },
     {
         "source_type": "issue",
@@ -297,7 +306,10 @@ CORPUS: list[dict] = [
             "since v4.34; upgrade if on an older version. "
             "Pass `clean_up_tokenization_spaces=True` as a workaround."
         ),
-        "metadata": {"title": "Tokenizer raises UnicodeEncodeError on emoji", "issue_id": "334"},
+        "metadata": {
+            "title": "Tokenizer raises UnicodeEncodeError on emoji",
+            "issue_id": "334",
+        },
     },
     {
         "source_type": "issue",
@@ -328,7 +340,10 @@ CORPUS: list[dict] = [
             "\"from transformers import AutoModel; AutoModel.from_pretrained('bert-base-uncased')\"`"
             ". In Docker, mount the HF cache as a volume."
         ),
-        "metadata": {"title": "First model.load() call takes 30+ seconds", "issue_id": "445"},
+        "metadata": {
+            "title": "First model.load() call takes 30+ seconds",
+            "issue_id": "445",
+        },
     },
     {
         "source_type": "issue",
@@ -386,7 +401,10 @@ CORPUS: list[dict] = [
             "on DataLoader, or set `num_workers=0` for the DataLoader and use "
             "`Pipeline(num_workers=4)` instead."
         ),
-        "metadata": {"title": "DataLoader hangs with num_workers > 0", "issue_id": "723"},
+        "metadata": {
+            "title": "DataLoader hangs with num_workers > 0",
+            "issue_id": "723",
+        },
     },
 ]
 
@@ -684,6 +702,7 @@ def main() -> None:
     conn.close()
 
     import pathlib
+
     pathlib.Path(GOLDEN_PATH).parent.mkdir(parents=True, exist_ok=True)
     pathlib.Path(GOLDEN_PATH).write_text(json.dumps(golden, indent=2))
     print(f"\nWrote {len(golden)} entries to {GOLDEN_PATH}")
