@@ -1,57 +1,227 @@
 [
   {
     "id": "rag-001",
-    "question": "TODO: replace with a real maintainer question from the repo",
-    "ideal_answer": "TODO: the answer a maintainer would give",
-    "ground_truth_chunk_ids": ["TODO: id of the corpus chunk that contains the answer"],
+    "question": "How do I install transformers-toolkit?",
+    "ideal_answer": "Install with pip: pip install transformers-toolkit. Requires Python 3.9+ and PyTorch 2.0 or TensorFlow 2.12.",
+    "ground_truth_chunk_ids": [
+      "71e4042d-04fc-40fc-94e8-c210e84c4cd0"
+    ],
     "hand_labeled": true
   },
   {
     "id": "rag-002",
-    "question": "TODO",
-    "ideal_answer": "TODO",
-    "ground_truth_chunk_ids": ["TODO"],
+    "question": "Can you show me a basic example of using the Pipeline?",
+    "ideal_answer": "Create a Pipeline with the task name and call it with your input text. It auto-downloads the default model on first use.",
+    "ground_truth_chunk_ids": [
+      "d2c19ae3-6f0a-4039-a169-e3dc00d0146f"
+    ],
     "hand_labeled": true
   },
   {
     "id": "rag-003",
-    "question": "TODO",
-    "ideal_answer": "TODO",
-    "ground_truth_chunk_ids": ["TODO"],
+    "question": "How do I set the request timeout for API calls?",
+    "ideal_answer": "Set timeout in seconds when creating a client: Client(timeout=30). You can also pass timeout per-request.",
+    "ground_truth_chunk_ids": [
+      "8313cc6b-f5e9-45fe-b6f0-5085aa08e279"
+    ],
     "hand_labeled": true
   },
   {
     "id": "rag-004",
-    "question": "TODO",
-    "ideal_answer": "TODO",
-    "ground_truth_chunk_ids": ["TODO"],
-    "hand_labeled": true
+    "question": "How do I configure automatic retries with exponential back-off?",
+    "ideal_answer": "Use max_retries and backoff_factor: Client(max_retries=3, backoff_factor=0.5). Delay is backoff_factor * 2^attempt.",
+    "ground_truth_chunk_ids": [
+      "23c68209-c321-4658-a893-ffcfc32495c5"
+    ],
+    "hand_labeled": false
   },
   {
     "id": "rag-005",
-    "question": "TODO",
-    "ideal_answer": "TODO",
-    "ground_truth_chunk_ids": ["TODO"],
+    "question": "How do I authenticate with an API key?",
+    "ideal_answer": "Pass api_key at client creation or set the TRANSFORMERS_TOOLKIT_API_KEY environment variable.",
+    "ground_truth_chunk_ids": [
+      "08d53d98-0bb4-4bc7-8b4f-69ceb33f6a71"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-006",
+    "question": "How do I use the async client in an asyncio application?",
+    "ideal_answer": "Use AsyncClient as an async context manager with `async with AsyncClient() as client: result = await client.predict(text)`.",
+    "ground_truth_chunk_ids": [
+      "c876df13-f4fb-4609-ac9e-6cd269449884"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-007",
+    "question": "How do I process multiple items efficiently with batching?",
+    "ideal_answer": "Use predict_batch with a list of inputs and set batch_size=32. Batches are chunked automatically.",
+    "ground_truth_chunk_ids": [
+      "824f8520-1d44-4f12-9a17-df8fed90ae74"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-008",
+    "question": "How do I fix ConnectionError when connecting to the server?",
+    "ideal_answer": "Check server address, allow outbound HTTPS port 443, increase max_retries with backoff_factor=1.0.",
+    "ground_truth_chunk_ids": [
+      "4704c96a-f54c-4210-8c85-11c2d4114947"
+    ],
     "hand_labeled": true
   },
-  {"id": "rag-006",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-007",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-008",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-009",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-010",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-011",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-012",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-013",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-014",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-015",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-016",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-017",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-018",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-019",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-020",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-021",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-022",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-023",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-024",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false},
-  {"id": "rag-025",  "question": "TODO", "ideal_answer": "TODO", "ground_truth_chunk_ids": ["TODO"], "hand_labeled": false}
+  {
+    "id": "rag-009",
+    "question": "How do I reduce memory usage when processing large datasets?",
+    "ideal_answer": "Use a generator instead of a list, lower batch_size, call model.half() for FP16, or enable gradient checkpointing.",
+    "ground_truth_chunk_ids": [
+      "30d7f846-db5d-4f4f-bf69-1030fc77721b"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-010",
+    "question": "How do I set up CUDA for GPU acceleration?",
+    "ideal_answer": "Install CUDA-compatible PyTorch, verify with torch.cuda.is_available(), then pass device='cuda' to Pipeline or Client.",
+    "ground_truth_chunk_ids": [
+      "5057c350-b015-4138-a9e2-42706a197820"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-011",
+    "question": "How do I run the test suite for this project?",
+    "ideal_answer": "Install dev dependencies with pip install -e '.[dev]' then run pytest tests/ -v --cov=transformers_toolkit.",
+    "ground_truth_chunk_ids": [
+      "36d3828a-cdcb-452d-9bb3-a833f50c06a9"
+    ],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-012",
+    "question": "What are the requirements for opening a pull request?",
+    "ideal_answer": "All tests must pass, \u226590% coverage, ruff and mypy clean, changelog updated, PR description with summary and test plan.",
+    "ground_truth_chunk_ids": [
+      "e9d8179f-e99e-47a6-816b-a343cd31a56d"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-013",
+    "question": "What breaking changes were introduced in version 2?",
+    "ideal_answer": "Pipeline replaces Classifier, predict() replaces run(), use_fast parameter removed, minimum Python raised to 3.9.",
+    "ground_truth_chunk_ids": [
+      "8bedaf17-e660-4f8e-ba39-0139538d4050"
+    ],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-014",
+    "question": "How do I cache model outputs to improve performance?",
+    "ideal_answer": "Pass cache_size to the Client constructor: Client(cache_size=1000). Results are keyed by input text hash.",
+    "ground_truth_chunk_ids": [
+      "fa0aa9c0-958d-43d9-a793-7b029675cc69"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-015",
+    "question": "How do I configure the number of concurrent connections in async mode?",
+    "ideal_answer": "Use max_connections and max_keepalive on AsyncClient: AsyncClient(max_connections=20, max_keepalive=10).",
+    "ground_truth_chunk_ids": [
+      "e2670874-4690-49e3-8a67-4301d1b09a0c"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-016",
+    "question": "I get ConnectionError after 3 retries even with TRANSFORMERS_OFFLINE=0. What is the fix?",
+    "ideal_answer": "TRANSFORMERS_OFFLINE only affects model downloads. Set backoff_factor=1.0 and increase max_retries: Client(max_retries=5, backoff_factor=1.0).",
+    "ground_truth_chunk_ids": [
+      "5dcc3bc7-f03e-4913-97cc-da06c46b1108"
+    ],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-017",
+    "question": "TypeError when passing a list of strings to tokenizer encode method",
+    "ideal_answer": "Use encode_batch(['hello', 'world']) for lists. The encode() method only accepts a single string.",
+    "ground_truth_chunk_ids": [
+      "54b6a9e4-78c4-4622-887d-8b922b481785"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-018",
+    "question": "Memory grows with each batch call and is never freed. How do I fix the memory leak?",
+    "ideal_answer": "Upgrade to v4.36.1 which fixes the leak. Workaround: call torch.cuda.empty_cache() and gc.collect() after each batch.",
+    "ground_truth_chunk_ids": [
+      "e7bf60f5-97bc-422e-bc3a-9d563a42c170"
+    ],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-019",
+    "question": "UnicodeEncodeError when tokenizing text with emoji or CJK characters",
+    "ideal_answer": "Set PYTHONIOENCODING=utf-8, upgrade to v4.34+, or pass clean_up_tokenization_spaces=True as a workaround.",
+    "ground_truth_chunk_ids": [
+      "c212c311-5ab3-4a1b-a267-bf814f415183"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-020",
+    "question": "RuntimeError CUDA out of memory during model inference with large batch size",
+    "ideal_answer": "Reduce batch_size to 8-16, enable FP16 with model.half(), use torch.no_grad(), or set device_map='auto' for CPU offload.",
+    "ground_truth_chunk_ids": [
+      "b76c553e-65ae-4bde-a843-862cd855f2ef"
+    ],
+    "hand_labeled": true
+  },
+  {
+    "id": "rag-021",
+    "question": "Why does the first model load call take over 30 seconds?",
+    "ideal_answer": "The first call downloads weights from Hugging Face Hub. Pre-download them and mount ~/.cache/huggingface/hub as a Docker volume.",
+    "ground_truth_chunk_ids": [
+      "366d39dd-a519-4f1b-9efc-800dac0868b4"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-022",
+    "question": "How do I fix the use_fast deprecated parameter warning?",
+    "ideal_answer": "Remove use_fast=True or use_fast=False from all tokenizer calls. Fast tokenizers are always used in v2+.",
+    "ground_truth_chunk_ids": [
+      "9f13b480-9011-4f55-b694-5fa273c4ad67"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-023",
+    "question": "How does the library handle API rate limits in async mode?",
+    "ideal_answer": "Since v4.37 the async client reads Retry-After headers and waits automatically. For older versions catch RateLimitError and sleep manually.",
+    "ground_truth_chunk_ids": [
+      "c15990a3-e730-4bcf-a9ca-a5b3fb7c1a7c"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-024",
+    "question": "SSLError certificate verify failed when connecting behind a corporate proxy",
+    "ideal_answer": "Set REQUESTS_CA_BUNDLE to your corporate CA bundle path. Add the cert to the system trust store. Do not use verify=False in production.",
+    "ground_truth_chunk_ids": [
+      "800a86df-8b17-449a-8f56-9dea8147a279"
+    ],
+    "hand_labeled": false
+  },
+  {
+    "id": "rag-025",
+    "question": "DataLoader hangs indefinitely when num_workers is greater than zero",
+    "ideal_answer": "Set multiprocessing_context='spawn' on DataLoader, or use num_workers=0 on DataLoader and Pipeline(num_workers=4) instead.",
+    "ground_truth_chunk_ids": [
+      "67e73b14-6e1e-480d-bf28-046664fc0c93"
+    ],
+    "hand_labeled": false
+  }
 ]

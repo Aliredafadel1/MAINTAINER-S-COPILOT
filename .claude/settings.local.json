@@ -4,7 +4,9 @@
       "Bash(docker compose *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "PowerShell(tail -20)"
+      "PowerShell(tail -20)",
+      "Bash(docker run *)",
+      "PowerShell(docker cp week7-api-1:/app/evals/results/rag_eval_report.json d:\\\\week7\\\\evals\\\\results\\\\rag_eval_report.json)"
     ]
   }
 }

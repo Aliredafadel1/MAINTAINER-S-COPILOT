@@ -25,7 +25,7 @@ async def save(
     )
     await audit_repo.log(
         session,
-        action="memory_write",
+        action="write_memory",
         user_id=user_id,
         resource_type="memory",
         resource_id=str(mem.id),

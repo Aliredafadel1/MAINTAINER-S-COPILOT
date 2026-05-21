@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.infra import embeddings, llm
+from app.infra import embeddings, llm, minio_client
 from app.infra.redaction import redact
 from app.infra.tracing import span
 
@@ -174,4 +176,31 @@ async def search(
                 pass  # keep original scores if reranker unavailable
 
         fused.sort(key=lambda c: c.score, reverse=True)
-        return fused[:top_k]
+        results = fused[:top_k]
+
+        # Persist snapshot to MinIO for auditability (fire-and-forget)
+        try:
+            snapshot = {
+                "query": redact(query),
+                "rewritten_query": redact(retrieval_query),
+                "timestamp": time.time(),
+                "results": [
+                    {
+                        "id": c.id,
+                        "source_type": c.source_type,
+                        "source_id": c.source_id,
+                        "chunk_index": c.chunk_index,
+                        "score": c.score,
+                        "content_preview": c.content[:200],
+                    }
+                    for c in results
+                ],
+            }
+            key = f"{int(time.time() * 1000)}.json"
+            minio_client.put_bytes(
+                "rag-snapshots", key, json.dumps(snapshot).encode(), "application/json"
+            )
+        except Exception:
+            pass  # never block retrieval on MinIO failure
+
+        return results

@@ -9,7 +9,7 @@ from app.api.dependencies import get_current_user
 from app.domain.models import User
 from app.infra import db
 from app.repositories import conversations as conv_repo
-from app.services import chatbot
+from app.services import chatbot, memory_short
 
 router = APIRouter(prefix="/chat")
 
@@ -69,6 +69,20 @@ async def get_messages(
         from app.domain.exceptions import NotFoundError
 
         raise NotFoundError("Conversation not found")
+
+    # Try Redis first (fast path for active sessions); fall back to Postgres
+    redis_history = await memory_short.get_history(conversation_id)
+    if redis_history:
+        return [
+            MessageOut(
+                id="",
+                role=m["role"],
+                content=m["content"],
+                created_at="",
+            )
+            for m in redis_history
+        ]
+
     messages = await conv_repo.get_messages(session, conversation_id)
     return [
         MessageOut(

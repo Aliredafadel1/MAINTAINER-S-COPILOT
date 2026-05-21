@@ -1,0 +1,8 @@
+{
+  "n": 25,
+  "hit_at_5": 1.0,
+  "mrr_at_10": 1.0,
+  "faithfulness": 0.9768,
+  "answer_relevancy": 0.8524,
+  "hand_labeled_agreement_pct": 77.8
+}

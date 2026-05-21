@@ -9,9 +9,12 @@ Usage:
 """
 
 import asyncio
+import io
 import json
 import os
+import re
 import sys
+import uuid
 from pathlib import Path
 
 import anthropic
@@ -85,14 +88,16 @@ async def generate(session: httpx.AsyncClient, question: str, chunks: list[str])
 def judge_score(client: anthropic.Anthropic, prompt: str) -> float:
     msg = client.messages.create(
         model="claude-haiku-4-5-20251001",
-        max_tokens=10,
+        max_tokens=20,
         system=JUDGE_SYSTEM,
         messages=[{"role": "user", "content": prompt}],
     )
-    try:
-        return float(msg.content[0].text.strip())
-    except ValueError:
-        return 0.0
+    block = msg.content[0]
+    text = block.text.strip() if hasattr(block, "text") else ""
+    m = re.search(r"[0-9]+(?:\.[0-9]+)?", text)
+    if m:
+        return min(1.0, max(0.0, float(m.group())))
+    return 0.0
 
 
 def hit_at_k(retrieved_ids: list[str], ground_truth_ids: list[str], k: int) -> float:
@@ -206,5 +211,34 @@ async def run_eval() -> dict:
     return results
 
 
+def upload_to_minio(report: dict, run_id: str) -> None:
+    try:
+        from minio import Minio
+
+        client = Minio(
+            os.environ.get("MINIO_ENDPOINT", "localhost:9000"),
+            access_key=os.environ.get("MINIO_ACCESS_KEY", "minioadmin"),
+            secret_key=os.environ.get("MINIO_SECRET_KEY", "minioadmin"),
+            secure=False,
+        )
+        bucket = "ci-reports"
+        if not client.bucket_exists(bucket):
+            client.make_bucket(bucket)
+        data = json.dumps(report, indent=2).encode()
+        client.put_object(
+            bucket,
+            f"{run_id}/rag_eval_report.json",
+            io.BytesIO(data),
+            length=len(data),
+            content_type="application/json",
+        )
+        print(f"[MinIO] Uploaded to ci-reports/{run_id}/rag_eval_report.json")
+    except Exception as e:
+        print(f"[WARN] MinIO upload failed: {e}", file=sys.stderr)
+
+
 if __name__ == "__main__":
-    asyncio.run(run_eval())
+    run_id = os.environ.get("RUN_ID", str(uuid.uuid4())[:8])
+    results = asyncio.run(run_eval())
+    if results:
+        upload_to_minio(results, run_id)

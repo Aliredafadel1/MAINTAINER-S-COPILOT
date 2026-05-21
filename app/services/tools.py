@@ -85,47 +85,59 @@ async def dispatch(
     base = _modelserver_url()
 
     if tool_name == "classify_issue":
-        # /classify expects {text: str}; join title + body for the classifier
         text = f"{tool_input.get('title', '')}\n{tool_input.get('body', '')}"
         with span(
             "tool.classify_issue", title=redact(tool_input.get("title", "")[:100])
         ):
-            async with httpx.AsyncClient(timeout=10) as http:
-                resp = await http.post(f"{base}/classify", json={"text": text})
-                resp.raise_for_status()
-                data = resp.json()
+            try:
+                async with httpx.AsyncClient(timeout=10) as http:
+                    resp = await http.post(f"{base}/classify", json={"text": text})
+                    resp.raise_for_status()
+                    data = resp.json()
+            except Exception as exc:
+                return json.dumps({"error": f"Classifier unavailable: {exc}"})
         return json.dumps(data)
 
     if tool_name == "extract_entities":
         with span("tool.extract_entities"):
-            async with httpx.AsyncClient(timeout=10) as http:
-                resp = await http.post(f"{base}/ner", json={"text": tool_input["text"]})
-                resp.raise_for_status()
-                data = resp.json()
+            try:
+                async with httpx.AsyncClient(timeout=10) as http:
+                    resp = await http.post(
+                        f"{base}/ner", json={"text": tool_input["text"]}
+                    )
+                    resp.raise_for_status()
+                    data = resp.json()
+            except Exception as exc:
+                return json.dumps({"error": f"NER unavailable: {exc}"})
         return json.dumps(data)
 
     if tool_name == "summarize_thread":
-        # /summarize expects {title, body, comments}
         with span("tool.summarize_thread", text_len=len(tool_input.get("text", ""))):
-            async with httpx.AsyncClient(timeout=30) as http:
-                resp = await http.post(
-                    f"{base}/summarize",
-                    json={"title": "", "body": tool_input["text"], "comments": []},
-                )
-                resp.raise_for_status()
-                data = resp.json()
+            try:
+                async with httpx.AsyncClient(timeout=30) as http:
+                    resp = await http.post(
+                        f"{base}/summarize",
+                        json={"title": "", "body": tool_input["text"], "comments": []},
+                    )
+                    resp.raise_for_status()
+                    data = resp.json()
+            except Exception as exc:
+                return f"Summarizer unavailable: {exc}"
         return data.get("summary", "")
 
     if tool_name == "search_docs":
         query = tool_input["query"]
         top_k = tool_input.get("top_k", 5)
         with span("tool.search_docs", query=redact(query[:200]), top_k=top_k) as s:
-            chunks = await retrieval.search(session, query=query, top_k=top_k)
+            try:
+                chunks = await retrieval.search(session, query=query, top_k=top_k)
+            except Exception as exc:
+                return f"Search unavailable: {exc}"
             s.set_attribute("tool.search_docs.results", len(chunks))
         snippets = [
             f"[{c.source_type}:{c.source_id}] {c.content[:300]}" for c in chunks
         ]
-        return "\n\n".join(snippets)
+        return "\n\n".join(snippets) if snippets else "No results found."
 
     if tool_name == "write_memory":
         with span(

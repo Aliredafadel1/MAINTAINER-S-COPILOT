@@ -1,12 +1,16 @@
 import logging
 import os
 import sys
+import time
+from collections.abc import Awaitable, Callable
 from contextlib import asynccontextmanager
+from typing import Any
 
 import structlog
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.api.middleware import RequestContextMiddleware
 from app.api.routes import audit, auth, chat, health, memory, rag, widgets
@@ -14,7 +18,9 @@ from app.domain.exceptions import AppError
 from app.infra import db, minio_client, redis_client, tracing, vault
 
 
-def _redact_processor(logger, method, event_dict):
+def _redact_processor(
+    logger: Any, method: str, event_dict: dict[str, Any]
+) -> dict[str, Any]:
     from app.infra.redaction import redact
 
     event_dict["event"] = redact(str(event_dict.get("event", "")))
@@ -40,7 +46,6 @@ def _boot_checks() -> None:
     """Hard assertions that must pass before serving traffic."""
     import hashlib
     import json
-    import os
 
     import yaml
 
@@ -66,7 +71,8 @@ def _boot_checks() -> None:
             if not os.path.exists(weights_path):
                 log.error("classifier_weights_missing", path=weights_path)
                 sys.exit(1)
-            actual_sha = hashlib.sha256(open(weights_path, "rb").read()).hexdigest()
+            with open(weights_path, "rb") as f:
+                actual_sha = hashlib.sha256(f.read()).hexdigest()
             if actual_sha != expected_sha:
                 log.error(
                     "classifier_weights_sha256_mismatch",
@@ -78,7 +84,7 @@ def _boot_checks() -> None:
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> Any:
     log.info("startup_begin")
 
     # 1. Secrets — must succeed or we exit
@@ -113,8 +119,67 @@ async def lifespan(app: FastAPI):
     log.info("shutdown")
 
 
+class DynamicCORSMiddleware(BaseHTTPMiddleware):
+    """CORS middleware that reads allowed_origins from the widgets table.
+
+    Origins are cached for 60 s to avoid a DB round-trip on every request.
+    Falls back to deny-all if the DB is unavailable.
+    """
+
+    _cache: list[str] = []
+    _cache_at: float = 0.0
+    _TTL = 60.0
+
+    async def _get_allowed_origins(self) -> list[str]:
+        now = time.monotonic()
+        if now - self._cache_at < self._TTL:
+            return self._cache
+        try:
+            from sqlalchemy import select
+
+            from app.domain.models import Widget
+
+            async for session in db.get_session():
+                result = await session.execute(
+                    select(Widget.allowed_origins).where(Widget.is_active == True)  # noqa: E712
+                )
+                origins: list[str] = []
+                for (row_origins,) in result:
+                    origins.extend(row_origins or [])
+                DynamicCORSMiddleware._cache = list(set(origins))
+                DynamicCORSMiddleware._cache_at = now
+                return DynamicCORSMiddleware._cache
+        except Exception:
+            pass
+        return DynamicCORSMiddleware._cache  # return stale cache on error
+
+    async def dispatch(
+        self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
+    ) -> Response:
+        origin = request.headers.get("origin", "")
+        allowed = await self._get_allowed_origins()
+        origin_allowed = origin and ("*" in allowed or origin in allowed)
+
+        if request.method == "OPTIONS":
+            response = Response(status_code=204)
+        else:
+            response = await call_next(request)
+
+        if origin_allowed:
+            response.headers["Access-Control-Allow-Origin"] = origin
+            response.headers["Access-Control-Allow-Credentials"] = "true"
+            response.headers["Access-Control-Allow-Methods"] = (
+                "GET, POST, PUT, DELETE, OPTIONS"
+            )
+            response.headers["Access-Control-Allow-Headers"] = (
+                "Authorization, Content-Type"
+            )
+        return response
+
+
 app = FastAPI(title="Maintainer's Copilot", lifespan=lifespan)
 
+app.add_middleware(DynamicCORSMiddleware)
 app.add_middleware(RequestContextMiddleware)
 
 app.include_router(health.router)

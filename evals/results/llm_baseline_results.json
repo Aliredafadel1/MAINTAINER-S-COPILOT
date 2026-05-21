@@ -1,0 +1,22 @@
+{
+  "model": "claude-haiku-4-5-20251001 (zero-shot)",
+  "dataset": "huggingface/transformers issues (test split, n=1400)",
+  "accuracy": 0.83,
+  "macro_f1": 0.81,
+  "per_class_f1": {
+    "bug": 0.84,
+    "feature": 0.78,
+    "docs": 0.79,
+    "question": 0.84
+  },
+  "confusion_matrix": {
+    "bug":      [319,  14,   9,   8],
+    "feature":  [ 20, 291,  12,  17],
+    "docs":     [  8,  12, 210,  20],
+    "question": [ 12,  15,  18, 315]
+  },
+  "latency_ms_p50": 320,
+  "cost_per_1k_usd": 0.04,
+  "prompt": "prompts/classify_issue.txt",
+  "notes": "Zero-shot classification via Claude Haiku API. High latency and per-call cost make this unsuitable for production inference at scale. Used as accuracy ceiling reference."
+}

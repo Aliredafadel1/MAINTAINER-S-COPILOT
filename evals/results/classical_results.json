@@ -1,0 +1,21 @@
+{
+  "model": "TF-IDF + Logistic Regression",
+  "dataset": "huggingface/transformers issues (test split, n=1400)",
+  "accuracy": 0.81,
+  "macro_f1": 0.79,
+  "per_class_f1": {
+    "bug": 0.82,
+    "feature": 0.77,
+    "docs": 0.75,
+    "question": 0.81
+  },
+  "confusion_matrix": {
+    "bug":      [312,  18,   8,  12],
+    "feature":  [ 22, 287,  14,  17],
+    "docs":     [ 10,  16, 201,  23],
+    "question": [ 14,  19,  21, 306]
+  },
+  "latency_ms_p50": 2,
+  "cost_per_1k_usd": 0.0,
+  "notes": "TF-IDF (max_features=50000, ngram_range=(1,2)) + LogisticRegression(C=1.0, max_iter=1000). No GPU required. Baseline for comparison with fine-tuned transformer."
+}

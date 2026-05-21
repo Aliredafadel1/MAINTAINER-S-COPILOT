@@ -2,6 +2,7 @@
 
 import os
 import sys
+import time
 import hvac
 
 VAULT_ADDR = os.environ["VAULT_ADDR"]
@@ -16,12 +17,21 @@ SECRETS = {
     "TRACING_KEY": os.environ.get("SEED_TRACING_KEY", ""),
 }
 
-try:
-    client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
-    client.secrets.kv.v2.create_or_update_secret(
-        path="app", secret=SECRETS, mount_point="secret"
-    )
-    print("vault seeded successfully")
-except Exception as exc:
-    print(f"vault seed failed: {exc}", file=sys.stderr)
-    sys.exit(1)
+_RETRIES = 10
+_DELAY = 3.0
+
+for attempt in range(1, _RETRIES + 1):
+    try:
+        client = hvac.Client(url=VAULT_ADDR, token=VAULT_TOKEN)
+        client.secrets.kv.v2.create_or_update_secret(
+            path="app", secret=SECRETS, mount_point="secret"
+        )
+        print("vault seeded successfully")
+        sys.exit(0)
+    except Exception as exc:
+        print(f"seed attempt {attempt}/{_RETRIES} failed: {exc}", file=sys.stderr)
+        if attempt < _RETRIES:
+            time.sleep(_DELAY)
+
+print("vault seeding failed after all retries", file=sys.stderr)
+sys.exit(1)
