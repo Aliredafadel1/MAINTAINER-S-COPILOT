@@ -2,7 +2,7 @@ import logging
 import os
 import sys
 import time
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, MutableMapping
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -19,8 +19,8 @@ from app.infra import db, minio_client, redis_client, tracing, vault
 
 
 def _redact_processor(
-    logger: Any, method: str, event_dict: dict[str, Any]
-) -> dict[str, Any]:
+    logger: Any, method: str, event_dict: MutableMapping[str, Any]
+) -> MutableMapping[str, Any]:
     from app.infra.redaction import redact
 
     event_dict["event"] = redact(str(event_dict.get("event", "")))
