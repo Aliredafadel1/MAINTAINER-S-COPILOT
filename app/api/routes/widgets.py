@@ -102,6 +102,7 @@ async def embed_widget(
     widget = await widget_repo.get(session, widget_id)
     if widget is None or not widget.is_active:
         from app.domain.exceptions import NotFoundError
+
         raise NotFoundError("Widget not found")
 
     origins = widget.allowed_origins or []
