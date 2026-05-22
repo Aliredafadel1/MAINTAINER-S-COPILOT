@@ -6,23 +6,18 @@ function mount(widgetId: string, apiUrl: string) {
   const host = document.createElement("div");
   host.id = "maintainers-copilot-root";
   document.body.appendChild(host);
-
-  // Shadow DOM for style isolation
-  const shadow = host.attachShadow({ mode: "open" });
-  const mountPoint = document.createElement("div");
-  shadow.appendChild(mountPoint);
-
-  ReactDOM.createRoot(mountPoint).render(
+  ReactDOM.createRoot(host).render(
     <React.StrictMode>
       <App widgetId={widgetId} apiUrl={apiUrl} />
     </React.StrictMode>
   );
 }
 
-// Auto-initialize from the loader script's data attributes
-const loaderScript = document.currentScript as HTMLScriptElement | null;
-if (loaderScript) {
-  const widgetId = loaderScript.dataset.widgetId ?? "";
-  const apiUrl = loaderScript.dataset.apiUrl ?? "http://localhost:8000";
-  if (widgetId) mount(widgetId, apiUrl);
+// Globals set synchronously by widget.js before this script loaded.
+// Dynamically-injected scripts are async, so globals are always ready here.
+const widgetId: string = (window as any).__MC_WIDGET_ID__ || "";
+const apiUrl: string = (window as any).__MC_API_URL__ || "http://localhost:8000";
+
+if (widgetId) {
+  mount(widgetId, apiUrl);
 }

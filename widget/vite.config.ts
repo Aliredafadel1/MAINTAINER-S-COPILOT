@@ -4,6 +4,7 @@ import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react()],
+  publicDir: "public_static",
   build: {
     lib: {
       entry: resolve(__dirname, "src/main.tsx"),

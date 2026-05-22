@@ -12,6 +12,8 @@ from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
 from app.api.middleware import RequestContextMiddleware
 from app.api.routes import audit, auth, chat, health, memory, rag, widgets
 from app.domain.exceptions import AppError
@@ -192,6 +194,8 @@ app.include_router(audit.router)
 
 if os.path.isdir("public"):
     app.mount("/static", StaticFiles(directory="public"), name="static")
+
+FastAPIInstrumentor.instrument_app(app)
 
 
 @app.exception_handler(AppError)

@@ -23,7 +23,6 @@ def setup(service_name: str) -> None:
     provider.add_span_processor(BatchSpanProcessor(exporter))
     trace.set_tracer_provider(provider)
 
-    FastAPIInstrumentor().instrument()
     SQLAlchemyInstrumentor().instrument()
     RedisInstrumentor().instrument()
 

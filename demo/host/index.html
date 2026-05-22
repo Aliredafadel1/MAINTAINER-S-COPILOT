@@ -2,25 +2,505 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Demo Host App</title>
-  <style>body { font-family: sans-serif; padding: 2rem; }</style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyDataTools — OSS Project Dashboard</title>
+  <style>
+    :root {
+      --brand: #6366f1;
+      --brand-dark: #4f46e5;
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --green: #3fb950;
+      --red: #f85149;
+      --yellow: #d29922;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+           background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 0 2rem; display: flex; align-items: center; gap: 2rem; height: 56px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; display: flex; align-items: center; gap: 8px; cursor: default; }
+    .nav-logo span { color: var(--brand); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links button { background: none; border: none; color: var(--muted); font-size: .9rem; font-family: inherit; cursor: pointer; padding: 0; }
+    .nav-links button:hover { color: var(--text); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 1rem; }
+    .btn { padding: 6px 14px; border-radius: 6px; font-size: .85rem; cursor: pointer; border: none; font-family: inherit; }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { background: var(--border); }
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-sm { padding: 4px 10px; font-size: .8rem; }
+    #user-pill { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
+    #user-pill strong { color: var(--text); }
+
+    /* ── AUTH MODAL ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.7);
+      z-index: 9000; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+             padding: 2rem; width: 360px; }
+    .modal h2 { margin-bottom: 1.2rem; font-size: 1.1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: .8rem; color: var(--muted); margin-bottom: 4px; }
+    .form-group input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 10px; color: var(--text);
+      font-size: .9rem; font-family: inherit; outline: none;
+    }
+    .form-group input:focus { border-color: var(--brand); }
+    .modal-actions { display: flex; gap: 8px; margin-top: 1.2rem; }
+    .modal-actions .btn { flex: 1; justify-content: center; text-align: center; }
+    .modal-tabs { display: flex; gap: 0; margin-bottom: 1.2rem; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .modal-tab { flex: 1; padding: 7px; text-align: center; cursor: pointer; font-size: .85rem; background: transparent; color: var(--muted); border: none; font-family: inherit; }
+    .modal-tab.active { background: var(--brand); color: #fff; }
+    #auth-error { color: var(--red); font-size: .8rem; margin-top: 8px; display: none; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+      border-bottom: 1px solid var(--border); padding: 3rem 2rem;
+      text-align: center;
+    }
+    .hero-badge { display: inline-block; background: rgba(99,102,241,.15); color: var(--brand);
+                  border: 1px solid rgba(99,102,241,.3); border-radius: 20px;
+                  padding: 3px 12px; font-size: .78rem; margin-bottom: 1rem; }
+    .hero h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: .5rem; }
+    .hero p { color: var(--muted); max-width: 500px; margin: 0 auto 1.5rem; font-size: .95rem; line-height: 1.6; }
+    .hero-stats { display: flex; justify-content: center; gap: 2rem; }
+    .stat { text-align: center; }
+    .stat-val { font-size: 1.4rem; font-weight: 700; }
+    .stat-lbl { font-size: .75rem; color: var(--muted); }
+
+    /* ── MAIN LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 2rem; display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: start; }
+    @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+
+    /* ── CARDS ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+    .card-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-header h3 { font-size: .9rem; font-weight: 600; }
+
+    /* ── ISSUES ── */
+    .issue-list { list-style: none; }
+    .issue-item { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; }
+    .issue-item:last-child { border-bottom: none; }
+    .issue-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+    .issue-dot.open { background: var(--green); }
+    .issue-dot.closed { background: var(--red); }
+    .issue-dot.in-progress { background: var(--yellow); }
+    .issue-body h4 { font-size: .875rem; font-weight: 500; margin-bottom: 3px; }
+    .issue-body p { font-size: .78rem; color: var(--muted); }
+    .issue-label { display: inline-block; border-radius: 20px; padding: 1px 8px; font-size: .72rem; border: 1px solid; }
+    .label-bug { color: #f85149; border-color: rgba(248,81,73,.4); }
+    .label-feature { color: #58a6ff; border-color: rgba(88,166,255,.4); }
+    .label-docs { color: #56d364; border-color: rgba(86,211,100,.4); }
+    .label-question { color: #d2a8ff; border-color: rgba(210,168,255,.4); }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+    .info-row { display: flex; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: .83rem; }
+    .info-row:last-child { border-bottom: none; }
+    .info-row span:first-child { color: var(--muted); }
+
+    /* ── INLINE CHATBOT ── */
+    #copilot-card { display: flex; flex-direction: column; }
+    #chat-login { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    #chat-login label { font-size: .78rem; color: var(--muted); display: block; margin-bottom: 3px; }
+    #chat-login input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 7px 10px; color: var(--text);
+      font-size: .85rem; font-family: inherit; outline: none;
+    }
+    #chat-login input:focus { border-color: var(--brand); }
+    #chat-login-err { color: var(--red); font-size: .78rem; display: none; }
+    #chat-window { display: none; flex-direction: column; height: 420px; }
+    #chat-messages {
+      flex: 1; overflow-y: auto; padding: 12px;
+      display: flex; flex-direction: column; gap: 8px;
+      background: #0d1117;
+    }
+    #chat-messages::-webkit-scrollbar { width: 4px; }
+    #chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    .chat-hint { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; }
+    .msg-user {
+      align-self: flex-end; background: var(--brand); color: #fff;
+      padding: 7px 11px; border-radius: 12px 12px 2px 12px;
+      max-width: 85%; font-size: .83rem; line-height: 1.4; word-break: break-word; white-space: pre-wrap;
+    }
+    .msg-bot {
+      align-self: flex-start; background: var(--surface); color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 11px; border-radius: 12px 12px 12px 2px;
+      max-width: 85%; font-size: .83rem; line-height: 1.4; word-break: break-word; white-space: pre-wrap;
+    }
+    #chat-input-row {
+      display: flex; gap: 6px; padding: 10px;
+      border-top: 1px solid var(--border); background: var(--surface);
+    }
+    #chat-input {
+      flex: 1; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 7px 10px; color: var(--text);
+      font-size: .85rem; font-family: inherit; outline: none; resize: none;
+    }
+    #chat-input:focus { border-color: var(--brand); }
+    #chat-send {
+      padding: 7px 14px; background: var(--brand); color: #fff;
+      border: none; border-radius: 6px; font-size: .85rem;
+      font-family: inherit; cursor: pointer; white-space: nowrap;
+    }
+    #chat-send:disabled { background: var(--muted); cursor: not-allowed; }
+    #chat-send:hover:not(:disabled) { background: var(--brand-dark); }
+    #chat-user-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 12px; background: rgba(99,102,241,.1);
+      border-bottom: 1px solid var(--border); font-size: .75rem; color: var(--muted);
+    }
+    #chat-user-bar button {
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      font-size: .72rem; font-family: inherit; padding: 2px 6px;
+      border: 1px solid var(--border); border-radius: 4px;
+    }
+    #chat-user-bar button:hover { color: var(--text); }
+  </style>
 </head>
 <body>
-  <h1>Demo Host App</h1>
-  <p>This demo page embeds the Maintainer's Copilot widget. Replace <code>YOUR_WIDGET_ID</code> with the ID from the admin UI.</p>
-  <hr />
-  <h2>Sample issue to triage</h2>
-  <pre style="background:#f6f8fa;padding:1rem;border-radius:4px">
-Title: ConnectionError when using async client with retry=3
-Body: Using transformers 4.35.0 on Python 3.11.
-When I call pipeline("text-classification", model="distilbert-base") and the
-hub is slow, I get ConnectionError after exactly 3 retries even though I set
-TRANSFORMERS_OFFLINE=0.
-  </pre>
-  <script
-    src="http://localhost:8080/widget.iife.js"
-    data-widget-id="e382c607-4c21-4541-8efd-6c1dfd845788"
-    data-api-url="http://localhost:8000"
-  ></script>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nav-logo">⚙️ Py<span>Data</span>Tools</span>
+  <ul class="nav-links">
+    <li><button onclick="void(0)">Issues</button></li>
+    <li><button onclick="void(0)">Pull Requests</button></li>
+    <li><button onclick="void(0)">Docs</button></li>
+    <li><button onclick="void(0)">Releases</button></li>
+  </ul>
+  <div class="nav-right">
+    <div id="user-pill" style="display:none">
+      Signed in as <strong id="username-display"></strong>
+      <button class="btn btn-outline btn-sm" onclick="logout()">Sign out</button>
+    </div>
+    <button id="login-btn" class="btn btn-primary" onclick="openModal()">Sign in</button>
+  </div>
+</nav>
+
+<!-- ── AUTH MODAL ── -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2>Sign in to PyDataTools</h2>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="modal-tab" id="tab-register" onclick="switchTab('register')">Register</button>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="auth-email" placeholder="you@example.com" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="auth-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitAuth()" />
+    </div>
+    <div id="auth-error"></div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitAuth()" id="submit-btn">Sign in</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge">Open Source · MIT License</div>
+  <h1>PyDataTools</h1>
+  <p>A Python toolkit for high-performance data pipelines, async transformers integration, and distributed feature engineering.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-val">4.2k</div><div class="stat-lbl">⭐ Stars</div></div>
+    <div class="stat"><div class="stat-val">312</div><div class="stat-lbl">🍴 Forks</div></div>
+    <div class="stat"><div class="stat-val">47</div><div class="stat-lbl">🐛 Open Issues</div></div>
+    <div class="stat"><div class="stat-val">v2.3.1</div><div class="stat-lbl">🏷 Latest</div></div>
+  </div>
+</div>
+
+<!-- ── CONTENT ── -->
+<div class="container">
+
+  <!-- Issues list -->
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Recent Issues</h3>
+        <span style="font-size:.8rem;color:var(--muted)">47 open · 1,203 closed</span>
+      </div>
+      <ul class="issue-list">
+        <li class="issue-item">
+          <div class="issue-dot open"></div>
+          <div class="issue-body">
+            <h4>ConnectionError when using async client with retry=3 <span class="issue-label label-bug">bug</span></h4>
+            <p>#1842 opened 2 days ago by user42 · transformers 4.35.0, Python 3.11</p>
+          </div>
+        </li>
+        <li class="issue-item">
+          <div class="issue-dot open"></div>
+          <div class="issue-body">
+            <h4>Add support for streaming responses in pipeline() <span class="issue-label label-feature">feature</span></h4>
+            <p>#1839 opened 4 days ago by ml_dev · 12 comments</p>
+          </div>
+        </li>
+        <li class="issue-item">
+          <div class="issue-dot in-progress"></div>
+          <div class="issue-body">
+            <h4>Docs missing example for custom tokenizer <span class="issue-label label-docs">docs</span></h4>
+            <p>#1831 opened 1 week ago by newbie_dev · 3 comments</p>
+          </div>
+        </li>
+        <li class="issue-item">
+          <div class="issue-dot open"></div>
+          <div class="issue-body">
+            <h4>How to set CUDA device for multi-GPU setup? <span class="issue-label label-question">question</span></h4>
+            <p>#1828 opened 1 week ago by researcher99 · 7 comments</p>
+          </div>
+        </li>
+        <li class="issue-item">
+          <div class="issue-dot closed"></div>
+          <div class="issue-body">
+            <h4>NullPointerException on model.from_pretrained() cold start <span class="issue-label label-bug">bug</span></h4>
+            <p>#1820 closed 2 weeks ago by maintainer · fixed in v2.3.1</p>
+          </div>
+        </li>
+        <li class="issue-item">
+          <div class="issue-dot closed"></div>
+          <div class="issue-body">
+            <h4>ImportError: cannot import AutoTokenizer after pip upgrade <span class="issue-label label-bug">bug</span></h4>
+            <p>#1815 closed 3 weeks ago by maintainer · fixed in v2.3.0</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="card">
+      <div class="card-header"><h3>Repository Info</h3></div>
+      <div class="info-row"><span>Language</span><span>Python 3.10+</span></div>
+      <div class="info-row"><span>License</span><span>MIT</span></div>
+      <div class="info-row"><span>Last commit</span><span>2 hours ago</span></div>
+      <div class="info-row"><span>CI status</span><span style="color:var(--green)">● passing</span></div>
+      <div class="info-row"><span>Coverage</span><span>87%</span></div>
+    </div>
+
+    <!-- ── INLINE CHATBOT ── -->
+    <div class="card" id="copilot-card">
+      <div class="card-header">
+        <h3>🤖 Maintainer's Copilot</h3>
+        <span style="font-size:.72rem;color:var(--muted)">AI triage assistant</span>
+      </div>
+
+      <!-- Login form (shown when not authenticated) -->
+      <div id="chat-login">
+        <p style="font-size:.8rem;color:var(--muted);margin-bottom:4px">Sign in to start triaging issues.</p>
+        <div>
+          <label>Email</label>
+          <input type="email" id="cl-email" placeholder="you@example.com" />
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" id="cl-pass" placeholder="••••••••"
+                 onkeydown="if(event.key==='Enter')chatLogin()" />
+        </div>
+        <div id="chat-login-err"></div>
+        <button class="btn btn-primary" style="width:100%;margin-top:4px" onclick="chatLogin()">Sign in</button>
+      </div>
+
+      <!-- Chat window (shown after login) -->
+      <div id="chat-window">
+        <div id="chat-user-bar">
+          <span id="chat-email-label"></span>
+          <button onclick="chatLogout()">Sign out</button>
+        </div>
+        <div id="chat-messages">
+          <p class="chat-hint">Ask me about an issue, bug, or feature request.</p>
+        </div>
+        <div id="chat-input-row">
+          <input id="chat-input" type="text" placeholder="Ask about an issue…"
+                 onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatSend()}" />
+          <button id="chat-send" onclick="chatSend()">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var API = "http://localhost:8000";
+  var chatToken = null;
+  var chatConvId = null;
+  var chatBusy = false;
+  var currentModalTab = "login";
+
+  // ── NAV AUTH MODAL ──
+  function openModal() { document.getElementById("modal").classList.add("open"); }
+  function closeModal() { document.getElementById("modal").classList.remove("open"); document.getElementById("auth-error").style.display="none"; }
+
+  function switchTab(tab) {
+    currentModalTab = tab;
+    document.getElementById("tab-login").className  = "modal-tab" + (tab==="login" ? " active" : "");
+    document.getElementById("tab-register").className = "modal-tab" + (tab==="register" ? " active" : "");
+    document.getElementById("submit-btn").textContent = tab === "login" ? "Sign in" : "Create account";
+  }
+
+  async function submitAuth() {
+    var email = document.getElementById("auth-email").value.trim();
+    var pass  = document.getElementById("auth-password").value;
+    var errEl = document.getElementById("auth-error");
+    errEl.style.display = "none";
+    if (!email || !pass) { errEl.textContent = "Email and password required."; errEl.style.display = "block"; return; }
+    var endpoint = currentModalTab === "login" ? "/auth/login" : "/auth/register";
+    try {
+      var r = await fetch(API + endpoint, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({email, password:pass}) });
+      var data = await r.json();
+      if (!r.ok) { errEl.textContent = data.message || "Authentication failed."; errEl.style.display = "block"; return; }
+      localStorage.setItem("mc_token", data.access_token);
+      localStorage.setItem("mc_email", email);
+      closeModal();
+      updateNavUI(email);
+      chatToken = data.access_token;
+      showChatWindow(email);
+    } catch(e) { errEl.textContent = "Could not reach the API."; errEl.style.display = "block"; }
+  }
+
+  function logout() {
+    localStorage.removeItem("mc_token"); localStorage.removeItem("mc_email");
+    chatToken = null; chatConvId = null;
+    document.getElementById("user-pill").style.display = "none";
+    document.getElementById("login-btn").style.display = "inline-block";
+    hideChatWindow();
+  }
+
+  function updateNavUI(email) {
+    document.getElementById("login-btn").style.display = "none";
+    document.getElementById("user-pill").style.display = "flex";
+    document.getElementById("username-display").textContent = email;
+  }
+
+  // ── INLINE CHAT ──
+  function showChatWindow(email) {
+    document.getElementById("chat-login").style.display = "none";
+    document.getElementById("chat-window").style.display = "flex";
+    document.getElementById("chat-email-label").textContent = email;
+  }
+
+  function hideChatWindow() {
+    document.getElementById("chat-window").style.display = "none";
+    document.getElementById("chat-login").style.display = "flex";
+    document.getElementById("cl-email").value = "";
+    document.getElementById("cl-pass").value = "";
+    document.getElementById("chat-messages").innerHTML = '<p class="chat-hint">Ask me about an issue, bug, or feature request.</p>';
+  }
+
+  async function chatLogin() {
+    var email = document.getElementById("cl-email").value.trim();
+    var pass  = document.getElementById("cl-pass").value;
+    var errEl = document.getElementById("chat-login-err");
+    errEl.style.display = "none";
+    if (!email || !pass) { errEl.textContent = "Email and password required."; errEl.style.display = "block"; return; }
+    try {
+      var r = await fetch(API + "/auth/login", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({email, password:pass}) });
+      var data = await r.json();
+      if (!r.ok) { errEl.textContent = data.message || "Login failed."; errEl.style.display = "block"; return; }
+      chatToken = data.access_token;
+      localStorage.setItem("mc_token", data.access_token);
+      localStorage.setItem("mc_email", email);
+      updateNavUI(email);
+      showChatWindow(email);
+    } catch(e) { errEl.textContent = "Cannot reach API."; errEl.style.display = "block"; }
+  }
+
+  function chatLogout() {
+    chatToken = null; chatConvId = null;
+    localStorage.removeItem("mc_token"); localStorage.removeItem("mc_email");
+    document.getElementById("user-pill").style.display = "none";
+    document.getElementById("login-btn").style.display = "inline-block";
+    hideChatWindow();
+  }
+
+  function appendMsg(role, text) {
+    var box = document.getElementById("chat-messages");
+    // Remove hint on first message
+    var hint = box.querySelector(".chat-hint");
+    if (hint) hint.remove();
+    var div = document.createElement("div");
+    div.className = role === "user" ? "msg-user" : "msg-bot";
+    div.textContent = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+    return div;
+  }
+
+  async function chatSend() {
+    if (chatBusy || !chatToken) return;
+    var input = document.getElementById("chat-input");
+    var msg = input.value.trim();
+    if (!msg) return;
+    input.value = "";
+    chatBusy = true;
+    document.getElementById("chat-send").disabled = true;
+
+    appendMsg("user", msg);
+    var botDiv = appendMsg("bot", "…");
+
+    try {
+      var r = await fetch(API + "/chat/stream", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + chatToken },
+        body: JSON.stringify({ message: msg, conversation_id: chatConvId })
+      });
+      var text = "";
+      var reader = r.body.getReader();
+      var dec = new TextDecoder();
+      while (true) {
+        var chunk = await reader.read();
+        if (chunk.done) break;
+        var lines = dec.decode(chunk.value).split("\n");
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          if (!line.startsWith("data: ")) continue;
+          try {
+            var d = JSON.parse(line.slice(6));
+            if (d.type === "text") { text += d.text; botDiv.textContent = text; document.getElementById("chat-messages").scrollTop = 9999; }
+            if (d.type === "start" && d.conversation_id) chatConvId = d.conversation_id;
+          } catch(e) {}
+        }
+      }
+      if (!text) botDiv.textContent = "No response received.";
+    } catch(e) {
+      botDiv.textContent = "Error reaching API.";
+    }
+    chatBusy = false;
+    document.getElementById("chat-send").disabled = false;
+    input.focus();
+  }
+
+  // Restore session on load
+  (function() {
+    var token = localStorage.getItem("mc_token");
+    var email = localStorage.getItem("mc_email");
+    if (token && email) {
+      chatToken = token;
+      updateNavUI(email);
+      showChatWindow(email);
+    }
+  })();
+</script>
 </body>
 </html>
